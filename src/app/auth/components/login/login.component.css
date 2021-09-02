@@ -1,0 +1,57 @@
+.loginBox{
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.loginContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+    height: 400px;
+    border: solid 3px #3F51B5;
+    border-radius: 20px;
+    box-shadow: 5px 10px #888888;
+}
+
+
+.loginContainer .loginTitle{
+
+    display: flex;
+    flex-direction: row;
+    align-content: flex-start;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.loginContainer .loginTitle h2{
+    color: #3F51B5;
+}
+
+.loginContainer .options{
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+    
+}
+
+.loginContainer .options .register{
+    margin-top: 10px;
+}
+
+.loginContainer .options a{
+    text-decoration: none;
+    color: #3F51B5;
+}
+
+.loginContainer .options .btnLogin{
+    margin-left: 20px;
+}
+

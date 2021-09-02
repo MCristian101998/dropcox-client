@@ -1,1 +1,63 @@
-<p>login works!</p>
+<div class="loginBox">
+    <div class="loginContainer">
+
+        <div class="loginTitle">
+            <h2>Login</h2>
+        </div>
+    
+        <form [formGroup]="loginForm" class="loginForm">
+            <div class="formField">
+                <mat-form-field appearance="fill">
+                    <mat-label>
+                        Username :
+                    </mat-label>
+        
+                    <input
+                        matInput
+                        required
+                        type="text"
+                        placeholder="Ex. username"
+                        formControlName="username">
+        
+                    <mat-error *ngIf="username?.invalid">
+                        {{getUsernameControlErrors()}}
+                    </mat-error>
+                </mat-form-field>
+    
+            </div>
+    
+            <div class="formField">
+                <mat-form-field appearance="fill">
+                    <mat-label>
+                        Password :
+                    </mat-label>
+        
+                    <input
+                        matInput
+                        required
+                        type="password"
+                        placeholder="Ex. a strong password"
+                        formControlName="password"
+                        [type]="hidePassword ? 'password' : 'text'">
+
+                    <mat-icon matSuffix (click)="hidePassword = !hidePassword">{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+        
+                    <mat-error *ngIf="password?.invalid">
+                        {{getPasswordControlErrors()}}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </form>
+    
+        <div class="options">
+            <div class="register">
+                <a [routerLink] = "['/auth/register']">Create Account</a>
+            </div>
+    
+            <div class="btnLogin">
+                <button (click) = "submit()" mat-raised-button color="primary">Login</button>
+            </div>
+        </div>
+    </div>
+</div>
+

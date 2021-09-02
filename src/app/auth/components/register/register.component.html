@@ -1,1 +1,145 @@
-<p>register works!</p>
+<div class="registerBox">
+    <div class="registerContainer">
+
+        <div class="registerTitle">
+            <h2>Register</h2>
+        </div>
+    
+        <form [formGroup]="registerForm" class="registerForm">
+
+            <div class="formField">
+                <mat-form-field appearance="fill">
+                    <mat-label>
+                        First Name :
+                    </mat-label>
+        
+                    <input
+                        matInput
+                        required
+                        type="text"
+                        placeholder="Ex. John/Jane"
+                        formControlName="firstName">
+        
+                    <mat-error *ngIf="firstName?.invalid">
+                        {{getFirstNameControlErrors()}}
+                    </mat-error>
+                </mat-form-field>
+    
+            </div>
+
+            <div class="formField">
+                <mat-form-field appearance="fill">
+                    <mat-label>
+                        Last Name :
+                    </mat-label>
+        
+                    <input
+                        matInput
+                        required
+                        type="text"
+                        placeholder="Ex. Doe"
+                        formControlName="lastName">
+        
+                    <mat-error *ngIf="lastName?.invalid">
+                        {{getLastNameControlErrors()}}
+                    </mat-error>
+                </mat-form-field>
+    
+            </div>
+
+            <div class="formField">
+                <mat-form-field appearance="fill">
+                    <mat-label>
+                        Email :
+                    </mat-label>
+        
+                    <input
+                        matInput
+                        required
+                        type="email"
+                        placeholder="Ex. john@doe.com"
+                        formControlName="email">
+        
+                    <mat-error *ngIf="email?.invalid">
+                        {{getEmailControlErrors()}}
+                    </mat-error>
+                </mat-form-field>
+    
+            </div>
+
+            <div class="formField">
+                <mat-form-field appearance="fill">
+                    <mat-label>
+                        Username :
+                    </mat-label>
+        
+                    <input
+                        matInput
+                        required
+                        type="text"
+                        placeholder="Ex. username"
+                        formControlName="username">
+        
+                    <mat-error *ngIf="username?.invalid">
+                        {{getUsernameControlErrors()}}
+                    </mat-error>
+                </mat-form-field>
+    
+            </div>
+    
+            <div class="formField">
+                <mat-form-field appearance="fill">
+                    <mat-label>
+                        Password :
+                    </mat-label>
+        
+                    <input
+                        matInput
+                        required
+                        placeholder="Ex. a strong password"
+                        formControlName="password"
+                        [type]="hidePassword ? 'password' : 'text'">
+
+                        <mat-icon matSuffix (click)="hidePassword = !hidePassword">{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+        
+                    <mat-error *ngIf="password?.invalid">
+                        {{getPasswordControlErrors()}}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="formField">
+                <mat-form-field appearance="fill">
+                    <mat-label>
+                        Confirm Password :
+                    </mat-label>
+        
+                    <input
+                        (change) = "confirmPasswordChanged($event)"
+                        matInput
+                        required
+                        type="password"
+                        placeholder="Ex. a strong password"
+                        formControlName="confirmPassword"
+                        [type]="hideConfirmPassword ? 'password' : 'text'">
+
+                        <mat-icon matSuffix (click)="hideConfirmPassword = !hideConfirmPassword">{{hideConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+        
+                    <mat-error *ngIf="confirmPassword?.invalid">
+                        {{getConfirmPasswordControlErrors()}}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </form>
+    
+        <div class="options">
+            <div class="login">
+                <a [routerLink] = "['/auth/login']">Login</a>
+            </div>
+    
+            <div class="btnRegister">
+                <button (click) = "submit()" mat-raised-button color="primary">Register</button>
+            </div>
+        </div>
+    </div>
+</div>

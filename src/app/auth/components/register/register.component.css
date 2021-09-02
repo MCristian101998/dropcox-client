@@ -1,0 +1,57 @@
+.registerBox{
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.registerContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+    height: 700px;
+    border: solid 3px #3F51B5;
+    border-radius: 20px;
+    box-shadow: 5px 10px #888888;
+}
+
+
+.registerContainer .registerTitle{
+
+    display: flex;
+    flex-direction: row;
+    align-content: flex-start;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.registerContainer .registerTitle h2{
+    color: #3F51B5;
+}
+
+.registerContainer .options{
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+    
+}
+
+.registerContainer .options .login{
+    margin-top: 10px;
+}
+
+.registerContainer .options a{
+    text-decoration: none;
+    color: #3F51B5;
+}
+
+.registerContainer .options .btnRegister{
+    margin-left: 20px;
+}
+
