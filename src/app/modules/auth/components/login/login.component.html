@@ -55,7 +55,15 @@
             </div>
     
             <div class="btnLogin">
-                <button (click) = "submit()" mat-raised-button color="primary">Login</button>
+                <button 
+                    (click) = "submit()" 
+                    mat-raised-button 
+                    color="primary"
+                    [class.spinner]="loading"
+                    [disabled]="loading">
+
+                    Login
+                </button>
             </div>
         </div>
     </div>

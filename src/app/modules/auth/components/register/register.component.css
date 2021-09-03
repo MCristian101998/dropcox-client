@@ -14,7 +14,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 300px;
+    width: 400px;
     height: 700px;
     border: solid 3px #3F51B5;
     border-radius: 20px;
@@ -55,3 +55,27 @@
     margin-left: 20px;
 }
 
+
+@keyframes spinner {
+    to {transform: rotate(360deg);}
+  }
+   
+  .spinner:before {
+    content: '';
+    box-sizing: border-box;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin-top: -10px;
+    margin-left: -10px;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+    border-top-color: #3F51B5;
+    animation: spinner .8s linear infinite;
+  }
+
+  .mat-form-field{
+      width: 250px;
+  }

@@ -138,7 +138,14 @@
             </div>
     
             <div class="btnRegister">
-                <button (click) = "submit()" mat-raised-button color="primary">Register</button>
+                <button 
+                    (click) = "submit()"
+                    mat-raised-button 
+                    color="primary"
+                    [class.spinner]="loading"
+                    [disabled]="loading">
+                    Register
+                </button>
             </div>
         </div>
     </div>

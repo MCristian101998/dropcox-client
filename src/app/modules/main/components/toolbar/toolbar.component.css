@@ -1,0 +1,24 @@
+.spacer {
+    flex: 1 1 auto;
+}
+
+
+.menuContainer{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  flex-direction: column;
+}
+
+.menuContainer .userName{
+  border-bottom: solid 0.5px black;
+}
+
+.menuContainer .options{
+  margin-top: 5px;
+}
+
+::ng-deep userMenu {
+  width: 300px;
+}

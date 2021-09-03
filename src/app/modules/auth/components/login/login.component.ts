@@ -10,6 +10,8 @@ import { AuthService } from '../../services/auth.service';
 })
 export class LoginComponent implements OnInit {
 
+  loading:boolean = false;
+
   loginForm = new FormGroup({
 
     username: new FormControl('', [Validators.required]),
@@ -54,6 +56,8 @@ export class LoginComponent implements OnInit {
     if(this.loginForm.invalid){
       return;
     }
+
+    this.loading = true;
 
     alert("mare submit");
 

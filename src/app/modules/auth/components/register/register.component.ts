@@ -10,6 +10,8 @@ import { AuthService } from '../../services/auth.service';
 })
 export class RegisterComponent implements OnInit {
 
+  loading: boolean = false;
+
   registerForm = new FormGroup({
 
     firstName: new FormControl('', [Validators.required]),
@@ -115,6 +117,8 @@ export class RegisterComponent implements OnInit {
     if(this.registerForm.invalid){
       return;
     }
+
+    this.loading = true;
 
     var registerData = new RegisterDto();
 
