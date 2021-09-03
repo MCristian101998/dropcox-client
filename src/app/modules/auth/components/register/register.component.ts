@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { SnackBarService } from 'src/app/shared/services/snackBarService';
 import { RegisterDto } from '../../models/RegisterDto';
 import { AuthService } from '../../services/auth.service';
 
@@ -107,7 +109,9 @@ export class RegisterComponent implements OnInit {
   hideConfirmPassword: boolean = true;
 
   constructor(
-    private authService: AuthService
+    private authService: AuthService,
+    private snackBarService: SnackBarService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -128,12 +132,18 @@ export class RegisterComponent implements OnInit {
     registerData.username = this.username?.value;
     registerData.password = this.password?.value;
 
-    this.authService.register(registerData)
-      .subscribe({
-        next : (resp) =>{
+    // this.authService.register(registerData)
+    //   .subscribe({
+    //     next : (resp) =>{
 
-          //plm
-        }
-      });
+    //       //plm
+
+          
+    //     }
+    //   });
+
+
+      this.router.navigate(["/auth/login"]);
+      this.snackBarService.openSnackBar("Registered Successfully !");
   }
 }

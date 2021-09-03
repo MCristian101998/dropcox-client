@@ -4,16 +4,37 @@
         <app-navigation></app-navigation>
     </div>
 
-    <div class="content">
+    <div class="content"
+        appUpload 
+        (onFileDropped)="uploadFile($event)"
+        (onDragEnter) = "onDragEnter($event)"
+        (contextmenu) = "onRightClick($event)">
         <p>Salut</p>
     </div>
-
 
     <div class="footer">
         <app-footer></app-footer>
     </div>
 </div>
 
+<div class="uploadingFile" *ngIf = "isInDrag">
 
+    <div class="uploadingFileContainer">
+        <div class="image">
+            <img src = "/assets/images/upload.png">
+        </div>
+    
+        <div class="text">
+            <h4>Drop to upload.</h4>
+        </div>
+    </div>
 
+</div>
 
+<mat-menu #options="matMenu">
+    <button mat-menu-item>
+      <mat-icon>add</mat-icon>
+      <span>Add Folder</span>
+    </button>
+
+</mat-menu>

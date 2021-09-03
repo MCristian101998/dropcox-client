@@ -8,3 +8,49 @@
     flex: 1;
     overflow: auto;
 }
+
+.dragOver{
+    border: solid #3F51B5 4px;
+}
+
+.uploadingFile{
+    z-index: 10000;
+    position:absolute;
+    left: 40%;
+    right: 50%;
+    top: 80%;
+    width: 200px;
+}
+
+.uploadingFile .uploadingFileContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+
+    justify-items: center;
+    align-items: center;
+
+}
+
+.uploadingFile .uploadingFileContainer .image img{
+
+    width: 40px;
+    height: 40px;
+    -webkit-animation: mover 2s infinite  alternate;
+    animation: mover 1.5s infinite  alternate;
+}
+
+.uploadingFileContainer .uploadingFile .text{
+    background: #3F51B5;
+    
+}
+
+@-webkit-keyframes mover {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-20px); }
+}
+@keyframes mover {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-20px); }
+}

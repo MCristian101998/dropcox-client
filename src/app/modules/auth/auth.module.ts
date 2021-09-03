@@ -7,6 +7,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { MaterialModule } from '../../shared/modules/material.module';
 import { AuthService } from './services/auth.service';
 import { HttpClientModule } from '@angular/common/http';
+import { SnackBarService } from 'src/app/shared/services/snackBarService';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule
   ],
   providers:[
-    AuthService
+    AuthService,
+    SnackBarService
   ]
 })
 export class AuthModule { }
