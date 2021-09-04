@@ -132,18 +132,14 @@ export class RegisterComponent implements OnInit {
     registerData.username = this.username?.value;
     registerData.password = this.password?.value;
 
-    // this.authService.register(registerData)
-    //   .subscribe({
-    //     next : (resp) =>{
+    this.authService.register(registerData)
+      .subscribe({
+        next : (resp) =>{
 
-    //       //plm
-
-          
-    //     }
-    //   });
-
-
-      this.router.navigate(["/auth/login"]);
-      this.snackBarService.openSnackBar("Registered Successfully !");
+          alert(resp);
+          this.router.navigate(["/auth/login"]);
+          this.snackBarService.openSnackBar("Registered Successfully !");
+        }
+      });
   }
 }

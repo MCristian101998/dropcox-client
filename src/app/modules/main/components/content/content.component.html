@@ -15,6 +15,7 @@
     <div class="footer">
         <app-footer></app-footer>
     </div>
+    
 </div>
 
 <div class="uploadingFile" *ngIf = "isInDrag">
@@ -31,7 +32,10 @@
 
 </div>
 
-<mat-menu #options="matMenu">
+<mat-menu 
+    #options="matMenu"
+    [overlapTrigger] = true
+    [hasBackdrop] = false>
     <button mat-menu-item>
       <mat-icon>add</mat-icon>
       <span>Add Folder</span>

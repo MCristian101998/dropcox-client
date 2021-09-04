@@ -13,6 +13,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { UserService } from 'src/app/shared/services/user.service';
 import { UploadDirective } from 'src/app/directives/fileUpload.directive';
+import { QuickNavigationComponent } from './components/quick-navigation/quick-navigation.component';
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import { UploadDirective } from 'src/app/directives/fileUpload.directive';
     FooterComponent,
     NavigationComponent,
     UploadDirective,
+    QuickNavigationComponent,
   ],
   imports: [
     CommonModule,

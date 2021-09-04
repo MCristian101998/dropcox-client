@@ -16,6 +16,6 @@ export class AuthService {
 
   register(registerData: RegisterDto){
     
-    return this.http.post<any>(environment.apiBaseUrl + "auth", registerData);
+    return this.http.post<any>(environment.apiBaseUrl + "users/register", registerData);
   }
 }

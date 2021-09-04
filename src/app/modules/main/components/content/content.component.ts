@@ -1,3 +1,4 @@
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
 
@@ -10,8 +11,8 @@ export class ContentComponent implements OnInit {
 
   constructor() { }
 
+  menuTopLeftPosition =  {x: '0', y: '0'} 
   isInDrag: boolean = false;
-  @ViewChild(MatMenuTrigger) options!: MatMenuTrigger;
 
   uploadFile(evt: any){
     console.log('evt: ', evt);
@@ -32,9 +33,9 @@ export class ContentComponent implements OnInit {
     console.log("is in drag " + event);
   }
 
-  onRightClick(event: any){
-    event.preventDefault();
+  onRightClick(event: MouseEvent){
+    // event.preventDefault();
 
-    this.options.toggleMenu();
+    // this.options.toggleMenu();
   }
 }

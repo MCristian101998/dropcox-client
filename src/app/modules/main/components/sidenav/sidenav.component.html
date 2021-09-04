@@ -3,10 +3,12 @@
     </app-toolbar>
 
     <mat-sidenav-container class="app-sidenav-container">
-
         <mat-sidenav #sidenav class="app-sidenav mat-elevation-z10"
             [opened]="!isScreenSmall"
             [mode]="isScreenSmall ? 'over' : 'side'">
+
+            <app-quick-navigation></app-quick-navigation>
+
         </mat-sidenav>
     
         <mat-sidenav-content>
