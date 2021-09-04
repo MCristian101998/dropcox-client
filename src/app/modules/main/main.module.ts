@@ -14,6 +14,8 @@ import { NavigationComponent } from './components/navigation/navigation.componen
 import { UserService } from 'src/app/shared/services/user.service';
 import { UploadDirective } from 'src/app/directives/fileUpload.directive';
 import { QuickNavigationComponent } from './components/quick-navigation/quick-navigation.component';
+import { NewFolderDialogComponent } from './components/new-folder-dialog/new-folder-dialog.component';
+import { NewFolderDialogService } from './services/new-folder-dialog.service';
 
 
 @NgModule({
@@ -26,6 +28,7 @@ import { QuickNavigationComponent } from './components/quick-navigation/quick-na
     NavigationComponent,
     UploadDirective,
     QuickNavigationComponent,
+    NewFolderDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -35,7 +38,8 @@ import { QuickNavigationComponent } from './components/quick-navigation/quick-na
   ],
   providers:[
     SidenavSerive,
-    UserService
+    UserService,
+    NewFolderDialogService
   ]
 })
 export class MainModule { }

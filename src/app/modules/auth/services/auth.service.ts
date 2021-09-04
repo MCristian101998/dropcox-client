@@ -12,7 +12,7 @@ export class AuthService {
 
   login(loginData: LoginDto){
 
-    return this.http.post<LoginResponseDto>(environment.apiBaseUrl + "users/login", loginData);
+    return this.http.post<LoginResponseDto>(environment.apiBaseUrl + "authentification/login", loginData);
   }
 
   register(registerData: RegisterDto){

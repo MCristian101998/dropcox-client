@@ -13,7 +13,8 @@
 </mat-toolbar>
 
 <mat-menu #options="matMenu">
-    <button mat-menu-item>
+    <button mat-menu-item
+            (click) = "openDialog()">
       <mat-icon>add</mat-icon>
       <span>Add Folder</span>
     </button>

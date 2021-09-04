@@ -1,36 +1,39 @@
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { Component, OnInit } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
+import { DirectoriesDto } from '../../models/DirectoriesDto';
 
-interface FoodNode {
-  name: string;
-  children?: FoodNode[];
-}
-
-const TREE_DATA: FoodNode[] = [
+const TREE_DATA: DirectoriesDto[] = [
   {
+    uuId: '1',
     name: 'Fruit',
     children: [
-      {name: 'Apple'},
-      {name: 'Banana'},
-      {name: 'Fruit loops'},
+      {
+        uuId: '10',
+        name: 'Apple'
+      },
+      {
+        uuId: '11',
+        name: 'Banana'
+      },
+
+      {
+        uuId: '12',
+        name: 'Fruit loops'
+      },
     ]
   }, {
+    uuId: '2',
     name: 'Vegetables',
     children: [
       {
+        uuId: '20',
         name: 'Green',
         children: [
-          {name: 'Broccoli'},
-          {name: 'Brussels sprouts'},
+          {uuId: '30', name: 'Broccoli'},
+          {uuId: '34', name: 'Brussels sprouts'},
         ]
-      }, {
-        name: 'Orange',
-        children: [
-          {name: 'Pumpkins'},
-          {name: 'Carrots'},
-        ]
-      },
+      }, 
     ]
   },
 ];
@@ -42,14 +45,24 @@ const TREE_DATA: FoodNode[] = [
 })
 export class QuickNavigationComponent implements OnInit {
 
-  treeControl = new NestedTreeControl<FoodNode>(node => node.children);
-  dataSource = new MatTreeNestedDataSource<FoodNode>();
+  treeControl = new NestedTreeControl<DirectoriesDto>(node => node.children);
+  dataSource = new MatTreeNestedDataSource<DirectoriesDto>();
 
-  hasChild = (_: number, node: FoodNode) => !!node.children && node.children.length > 0;
+  hasChild = (_: number, node: DirectoriesDto) => !!node.children && node.children.length > 0;
 
-  constructor() { }
+  constructor() {
+
+    this.dataSource.data = TREE_DATA;
+  }
 
   ngOnInit(): void {
+  }
+
+  nodeClicked(node: DirectoriesDto){
+
+
+
+    alert(node.name);
   }
 
 }

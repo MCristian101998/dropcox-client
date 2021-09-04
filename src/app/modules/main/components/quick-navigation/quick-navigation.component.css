@@ -1,5 +1,20 @@
+.mat-tree-node {
+    min-height: 25px;
+    min-width: 30px;
+}
+
+.mat-tree-node:hover {
+   color: #3F51B5;
+   text-decoration: underline #3F51B5;
+   cursor: pointer;
+}
+
 .example-tree-invisible {
     display: none;
+  }
+
+  .folderImg{
+      margin-right: 5px;
   }
   
   .example-tree ul,
@@ -13,7 +28,8 @@
    * This padding sets alignment of the nested nodes.
    */
   .example-tree .mat-nested-tree-node div[role=group] {
-    padding-left: 40px;
+    padding-left: 10px;
+
   }
   
   /*
