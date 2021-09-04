@@ -139,6 +139,11 @@ export class RegisterComponent implements OnInit {
           alert(resp);
           this.router.navigate(["/auth/login"]);
           this.snackBarService.openSnackBar("Registered Successfully !");
+        },
+        error: () =>{
+
+          this.loading = false;
+          this.snackBarService.openSnackBar("Something went wrong. Please try again.");
         }
       });
   }
