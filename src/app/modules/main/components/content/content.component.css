@@ -7,6 +7,7 @@
 .content{
     flex: 1;
     overflow: auto;
+    margin-top: 10px;
 }
 
 .dragOver{
@@ -21,6 +22,36 @@
     top: 80%;
     width: 200px;
 }
+
+table{
+    width: 100%;
+}
+
+.mat-table {
+    overflow-x: scroll;
+}
+
+.mat-row:hover {
+    background-color: rgba(0,0,0,.4);
+    cursor: pointer;
+}
+
+.mat-cell,
+  .mat-header-cell {
+    word-wrap: initial;
+    display: table-cell;
+    padding: 0px 10px;
+    line-break: unset;
+    white-space: nowrap;
+    overflow: hidden;
+    vertical-align: middle;
+  }
+  
+  .mat-row,
+  .mat-header-row {
+    display: table-row;
+  }
+
 
 .uploadingFile .uploadingFileContainer{
     display: flex;

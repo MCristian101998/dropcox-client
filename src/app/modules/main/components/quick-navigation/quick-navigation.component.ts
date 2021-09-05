@@ -31,7 +31,33 @@ const TREE_DATA: DirectoriesDto[] = [
         name: 'Green',
         children: [
           {uuId: '30', name: 'Broccoli'},
-          {uuId: '34', name: 'Brussels sprouts'},
+          {uuId: '34', name: 'Brussels sprouts', children: [{
+            uuId: '2',
+            name: 'Vegetables',
+            children: [
+              {
+                uuId: '20',
+                name: 'Green',
+                children: [
+                  {uuId: '30', name: 'Broccoli'},
+                  {uuId: '34', name: 'Brussels sprouts', children: [{
+                    uuId: '2',
+                    name: 'Vegetables',
+                    children: [
+                      {
+                        uuId: '20',
+                        name: 'Green',
+                        children: [
+                          {uuId: '30', name: 'Broccoli'},
+                          {uuId: '34', name: 'Brussels sprouts'},
+                        ]
+                      }, 
+                    ]
+                  },]},
+                ]
+              }, 
+            ]
+          },]},
         ]
       }, 
     ]

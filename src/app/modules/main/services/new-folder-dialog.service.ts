@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
-import { NewFolderDialogComponent } from "../components/new-folder-dialog/new-folder-dialog.component";
+import { NewFolderDialogComponent } from "../components/modals/new-folder-dialog/new-folder-dialog.component";
 
 @Injectable()
 export class NewFolderDialogService{

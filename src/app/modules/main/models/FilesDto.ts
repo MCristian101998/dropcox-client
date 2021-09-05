@@ -2,6 +2,7 @@ import { FileTypeDto } from "./FileTypeDto";
 
 export class FilesDto{
 
+    image!: string;
     uuId!: string;
     fileName!: string;
     addedDate!: Date;
