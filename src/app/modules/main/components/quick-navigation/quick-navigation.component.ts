@@ -1,5 +1,5 @@
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { SnackBarService } from 'src/app/shared/services/snackBarService';
 import { UserService } from 'src/app/shared/services/user.service';
@@ -12,7 +12,7 @@ import { QuickNavigationService } from '../../services/quick-navigation.service'
   templateUrl: './quick-navigation.component.html',
   styleUrls: ['./quick-navigation.component.css']
 })
-export class QuickNavigationComponent implements OnInit {
+export class QuickNavigationComponent implements OnInit, OnDestroy {
 
   treeControl = new NestedTreeControl<DirectoriesDto>(node => node.subfolders);
   dataSource = new MatTreeNestedDataSource<DirectoriesDto>();
@@ -36,10 +36,36 @@ export class QuickNavigationComponent implements OnInit {
     }
 
     this.contentService.populateDirectories();
-    this.dataSource.data = this.contentService.directories;
+
+    this.contentService.directoriesLoaded.subscribe((msg) => {
+
+      var folders = this.contentService.directories;
+
+      var rootFolderId = "";
+
+      folders.forEach(folder => {
+
+        if(folder.fileName.toLowerCase() === 'private')
+        {
+          folder.fileName = "My drive";
+          rootFolderId = folder.id;
+        }
+
+        if(folder.fileName.toLowerCase() === 'shared'){
+          folder.fileName = "Shared Folders";
+        }
+
+      })
+
+      this.dataSource.data = this.contentService.directories;
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.contentService.directoriesLoaded.unsubscribe();
   }
 
   nodeClicked(node: DirectoriesDto){
-    this.contentService.navigateToFolder(node);
+    this.contentService.navigateToFolder(node.id);
   }
 }

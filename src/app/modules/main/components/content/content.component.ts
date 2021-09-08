@@ -1,5 +1,5 @@
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { FilesDto } from '../../models/FilesDto';
 import { FileTypeDto } from '../../models/FileTypeDto';
@@ -10,7 +10,7 @@ import { ContentService } from '../../services/content.service';
   templateUrl: './content.component.html',
   styleUrls: ['./content.component.css']
 })
-export class ContentComponent implements OnInit {
+export class ContentComponent implements OnInit, OnDestroy {
 
   fileTypes: FileTypeDto[] = [];
   files: FilesDto[] = [];
@@ -23,6 +23,7 @@ export class ContentComponent implements OnInit {
   isInDrag: boolean = false;
 
   constructor(private contentService: ContentService) { }
+ 
 
   uploadFile(evt: any){
     console.log('evt: ', evt);
@@ -35,17 +36,24 @@ export class ContentComponent implements OnInit {
 
   ngOnInit(): void {
     
-    this.currentFolderUuid = this.contentService.curretDirectoryId;
-    this.files = this.contentService.contentData;
+    this.currentFolderUuid = this.contentService.currentFolderId;
 
-     
-    this.files.forEach(file => {
-      if(file.fileType.type == 'directory'){
+    this.contentService.navigatedToDirectory.subscribe((data) => {
 
-        file.image = "/assets/images/folder.png";
-      }
+      this.files = this.contentService.currentFolderContent;
+      this.currentFolderUuid = this.contentService.currentFolderId;
+      this.files.forEach(file => {
+  
+        if(file.fileType.type == 'directory'){
+          file.image = "/assets/images/folder.png";
+        }
+      })
+
     })
+  }
 
+  ngOnDestroy(): void {
+    this.contentService.navigatedToDirectory.unsubscribe();
   }
 
   rowClick(rowId: string){
@@ -56,7 +64,7 @@ export class ContentComponent implements OnInit {
 
     if(file.fileType.type == 'directory')
     {
-      alert("Navigation to diretory : " + file.id);
+      this.contentService.navigateToFolder(file.id);
     }
     
     if(file.fileType.type == 'video')

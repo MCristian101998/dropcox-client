@@ -76,10 +76,11 @@ export class LoginComponent implements OnInit {
 
           this.router.navigate([""]);
         },
-        error: () =>{
+        error: (err) =>{
 
           this.loading = false;
-          this.snackBarService.openSnackBar("Something went wrong. Please try again.");
+          console.error(err);
+          this.snackBarService.openSnackBar(err.message);
         }
       });
   }

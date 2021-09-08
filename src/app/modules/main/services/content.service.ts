@@ -10,25 +10,26 @@ import { FilesDto } from "../models/FilesDto";
 @Injectable()
 export class ContentService{
 
-    private quickNavDirectories: DirectoriesDto[] = [];
-    private folderContent: FilesDto[] = [];
-    private currentDisplayedFolderId: string = "";
-    private navigationPath: string = '';
-    private currentUser: AppUserDto = new AppUserDto();
+    public directories: DirectoriesDto[] = [];
+    public currentUser: AppUserDto = new AppUserDto();
 
+    public currentFolderContent: FilesDto[] = [];
+    public currentFolderId: string = "";
+    public currentFolderPath: string = '';
+    public currentFolderHasParent: boolean = false;
+    public currentFolderParentId:string = '';
+
+    directoriesLoaded = new EventEmitter<DirectoriesDto[]>();
     navigatedToDirectory= new EventEmitter<DirectoriesDto>();
 
     constructor(
         private http: HttpClient,
         private userService: UserService,
         private snackBarService: SnackBarService
-    ){}
-
-    initData(){
-
+    ){
         var currentUser = this.userService.getCurrentUser();
 
-        if(currentUser == null){
+        if(currentUser === null){
             this.snackBarService.openSnackBar('Something went wrong ! Please reload.')
             return;
         }
@@ -37,12 +38,14 @@ export class ContentService{
     }
 
     populateDirectories(){
-        this.http.get<any>(environment.apiBaseUrl + "directories")
+        this.http.get<any>(environment.apiBaseUrl + "folders/" + this.currentUser.id)
         .subscribe({
 
             next: (resp) => {
 
-                this.quickNavDirectories = resp.directories;
+
+                this.directories = resp.directories;
+                this.directoriesLoaded.emit(resp.directories);
             },
             error: (err) => {
 
@@ -52,16 +55,37 @@ export class ContentService{
         });
     }
 
-    navigateToFolder(folder: DirectoriesDto){
+    navigateToFolder(folderId:string){
 
-        this.currentDisplayedFolderId = folder.id;
-        this.navigationPath = folder.path;
+        this.currentFolderId = folderId;
+        //this.currentFolderPath = path;
+        
+        // if(parentId !== undefined){
+        //     this.currentFolderParentId = parentId;
+        //     this.currentFolderHasParent = true;
+        //}
 
-        this.http.get<any>(environment.apiBaseUrl + "content/" + folder.id)
+        this.http.get<any>(environment.apiBaseUrl + "folders/content/" + folderId)
             .subscribe({
 
                 next: (resp) => {
-                    this.folderContent = resp;
+
+                    this.currentFolderId = resp.parentDirectory.id;
+                    this.currentFolderPath = resp.parentDirectory.path;
+                    this.currentFolderParentId = resp.parentDirectory.parentId;
+
+                    if(this.currentFolderParentId !== undefined){
+                        this.currentFolderHasParent = true;
+                    }
+                    else
+                    {
+                        this.currentFolderHasParent = false;
+                    }
+
+                    this.currentFolderContent = resp.files;
+                    this.navigatedToDirectory.emit(resp);
+
+                    //detalii despre parinte
                 },
 
                 error: (err) => {
@@ -71,12 +95,4 @@ export class ContentService{
                 }
             });
     }
-
-    get contentData(){ return this.folderContent.slice() }
-    get directories(){ return this.quickNavDirectories.slice() }
-    get curretDirectoryId() { return this.currentDisplayedFolderId }
-    get navPath() { return this.navigationPath }
-
-
-
 }

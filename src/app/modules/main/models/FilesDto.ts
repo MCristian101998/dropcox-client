@@ -8,6 +8,8 @@ export class FilesDto{
     addedDate!: string;
     modifiedDate!: string;
     size!: number;
+    parentId?:string;
+    path!:string;
     uploadedByUser!: string;
     fileType!: FileTypeDto; 
 }

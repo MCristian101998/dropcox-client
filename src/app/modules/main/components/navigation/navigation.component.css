@@ -1,3 +1,7 @@
 .navigation{
     border-bottom: solid 1px #DCDCDC;
 }
+
+.mat-icon:hover{
+    cursor: pointer;
+}

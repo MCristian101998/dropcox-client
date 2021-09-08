@@ -1,3 +1,9 @@
 <mat-toolbar class="navigation">
-    <p>Folder 1/Folder 2/Salut</p>
+    <mat-icon 
+        *ngIf = "hasParent"
+        (click) = "navigateToParent()"
+        matTooltip = "Go Back">
+            arrow_back
+    </mat-icon>
+    <p>{{path}}</p>
 </mat-toolbar>

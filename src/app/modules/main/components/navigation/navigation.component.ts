@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ContentService } from '../../services/content.service';
 
 @Component({
@@ -6,14 +6,34 @@ import { ContentService } from '../../services/content.service';
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.css']
 })
-export class NavigationComponent implements OnInit {
+export class NavigationComponent implements OnInit, OnDestroy {
 
   path: string = "";
+  hasParent: boolean = false;
+  parentId: string = "";
 
   constructor(private contentService: ContentService) { }
 
+  
+
   ngOnInit(): void {
 
-    this.path = this.contentService.navPath;
+    this.contentService.navigatedToDirectory.subscribe((data) => {
+
+      this.path = this.contentService.currentFolderPath;
+      
+
+      this.hasParent = this.contentService.currentFolderHasParent;
+      this.parentId = this.contentService.currentFolderParentId;
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.contentService.navigatedToDirectory.unsubscribe();
+  }
+
+  navigateToParent(){
+
+    this.contentService.navigateToFolder(this.parentId);
   }
 }

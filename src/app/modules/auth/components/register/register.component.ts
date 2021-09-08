@@ -20,8 +20,8 @@ export class RegisterComponent implements OnInit {
     lastName: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.required, Validators.email]),
     username: new FormControl('', [Validators.required]),
-    password: new FormControl('', [Validators.required]),
-    confirmPassword: new FormControl('', [Validators.required]),
+    password: new FormControl('', [Validators.required, Validators.minLength(10)]),
+    confirmPassword: new FormControl('', [Validators.required, Validators.minLength(10)]),
   })
 
   get firstName() { return this.registerForm.get('firstName'); }
@@ -76,6 +76,10 @@ export class RegisterComponent implements OnInit {
       return "You must enter a value !";
     }
 
+    if(this.password?.hasError('minlength')){
+      return "Password must have at least 10 characters !";
+    }
+
     return "";
   }
 
@@ -87,6 +91,10 @@ export class RegisterComponent implements OnInit {
     
     if(this.confirmPassword?.hasError('noMatch')){
       return "Passwords must match !";
+    }
+
+    if(this.confirmPassword?.hasError('minlength')){
+      return "Password must have at least 10 characters !";
     }
 
     return "";
@@ -103,6 +111,8 @@ export class RegisterComponent implements OnInit {
 
       this.confirmPassword?.setErrors({'noMatch' : true});
     }
+    
+    return "";
   }
 
   hidePassword: boolean = true;
@@ -136,14 +146,14 @@ export class RegisterComponent implements OnInit {
       .subscribe({
         next : (resp) =>{
 
-          alert(resp);
           this.router.navigate(["/auth/login"]);
           this.snackBarService.openSnackBar("Registered Successfully !");
         },
-        error: () =>{
+        error: (err) =>{
 
           this.loading = false;
-          this.snackBarService.openSnackBar("Something went wrong. Please try again.");
+          console.error(err);
+          this.snackBarService.openSnackBar(err.message);
         }
       });
   }

@@ -1,5 +1,5 @@
 export class FileTypeDto{
-    uuId!: string;
+    uuid!: string;
     type!:string;
-    isActive!: boolean
+    is_active!: boolean
 }

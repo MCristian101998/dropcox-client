@@ -32,7 +32,7 @@ table{
 }
 
 .mat-row:hover {
-    background-color: rgba(0,0,0,.4);
+    /* background-color: rgba(0,0,0,.4); */
     cursor: pointer;
 }
 
@@ -96,5 +96,5 @@ table{
 }
 
 .nameColumn{
-    width: 800px;
+    width: 8000px;
 }
