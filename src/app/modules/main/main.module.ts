@@ -16,6 +16,10 @@ import { UploadDirective } from 'src/app/directives/fileUpload.directive';
 import { QuickNavigationComponent } from './components/quick-navigation/quick-navigation.component';
 import { NewFolderDialogComponent } from './components/modals/new-folder-dialog/new-folder-dialog.component';
 import { NewFolderDialogService } from './services/new-folder-dialog.service';
+import { HttpModule } from 'src/app/shared/modules/http.module';
+import { QuickNavigationService } from './services/quick-navigation.service';
+import { SnackBarService } from 'src/app/shared/services/snackBarService';
+import { ContentService } from './services/content.service';
 
 
 @NgModule({
@@ -34,12 +38,16 @@ import { NewFolderDialogService } from './services/new-folder-dialog.service';
     CommonModule,
     MainRoutingModule,
     MaterialModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    HttpModule,
   ],
   providers:[
     SidenavSerive,
     UserService,
-    NewFolderDialogService
+    NewFolderDialogService,
+    QuickNavigationService,
+    SnackBarService,
+    ContentService
   ]
 })
 export class MainModule { }

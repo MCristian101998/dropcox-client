@@ -1,5 +1,5 @@
 export class AppUserDto{
-    uuId!: string;
+    id!: string;
     firstName!:string;
     lastName!:string;
     email!:string;

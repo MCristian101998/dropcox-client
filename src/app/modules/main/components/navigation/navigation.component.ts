@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ContentService } from '../../services/content.service';
 
 @Component({
   selector: 'app-navigation',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavigationComponent implements OnInit {
 
-  constructor() { }
+  path: string = "";
+
+  constructor(private contentService: ContentService) { }
 
   ngOnInit(): void {
-  }
 
+    this.path = this.contentService.navPath;
+  }
 }

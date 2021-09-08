@@ -3,10 +3,10 @@ import { FileTypeDto } from "./FileTypeDto";
 export class FilesDto{
 
     image!: string;
-    uuId!: string;
+    id!: string;
     fileName!: string;
-    addedDate!: Date;
-    modifiedDate!: Date;
+    addedDate!: string;
+    modifiedDate!: string;
     size!: number;
     uploadedByUser!: string;
     fileType!: FileTypeDto; 

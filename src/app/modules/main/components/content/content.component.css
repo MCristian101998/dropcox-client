@@ -85,3 +85,16 @@ table{
     0% { transform: translateY(0); }
     100% { transform: translateY(-20px); }
 }
+
+.selected{
+    background: #E8F0FE;
+    box-shadow: inset 1px 1px 0 rgb(0 0 0 / 10%), inset 0 -1px 0 rgb(0 0 0 / 7%);
+}
+
+.selected .mat-cell{
+    color: #3F51B5;
+}
+
+.nameColumn{
+    width: 800px;
+}

@@ -3,6 +3,7 @@ import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { FilesDto } from '../../models/FilesDto';
 import { FileTypeDto } from '../../models/FileTypeDto';
+import { ContentService } from '../../services/content.service';
 
 @Component({
   selector: 'app-content',
@@ -11,15 +12,17 @@ import { FileTypeDto } from '../../models/FileTypeDto';
 })
 export class ContentComponent implements OnInit {
 
-  constructor() { }
   fileTypes: FileTypeDto[] = [];
   files: FilesDto[] = [];
   currentFolderUuid:string = "";
+  selectedTableEntityId: string = "";
 
   displayedColumns: string[] = ['fileName', 'owner', 'lastModified'];
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
   isInDrag: boolean = false;
+
+  constructor(private contentService: ContentService) { }
 
   uploadFile(evt: any){
     console.log('evt: ', evt);
@@ -28,47 +31,14 @@ export class ContentComponent implements OnInit {
     payload.append('data', evt[0]);
     // File can now be uploaded by doing an http post with the payload
 
-    alert("sdasdasd");
   }
 
   ngOnInit(): void {
+    
+    this.currentFolderUuid = this.contentService.curretDirectoryId;
+    this.files = this.contentService.contentData;
 
-    this.files = [
-
-      {
-        image: '',
-        uuId: '123',
-        fileName: 'new folder',
-        addedDate: new Date(2018, 0O5, 0O5, 17, 23, 42, 11),
-        modifiedDate: new Date(2018, 0O5, 0O5, 17, 23, 42, 11),
-        size: 10,
-        uploadedByUser: 'me',
-        fileType: {uuId: '23', type: 'directory', isActive: true}
-      },
-  
-      {
-        image: '',
-        uuId: '123',
-        fileName: 'new folder 1',
-        addedDate: new Date(2018, 0O5, 0O5, 17, 23, 42, 11),
-        modifiedDate: new Date(2018, 0O5, 0O5, 17, 23, 42, 11),
-        size: 10,
-        uploadedByUser: 'me',
-        fileType: {uuId: '23', type: 'directory', isActive: true}
-      },
-      {
-        image: '',
-        uuId: '123',
-        fileName: 'new folder 2',
-        addedDate: new Date(2018, 0O5, 0O5, 17, 23, 42, 11),
-        modifiedDate: new Date(2018, 0O5, 0O5, 17, 23, 42, 11),
-        size: 10,
-        uploadedByUser: 'me',
-        fileType: {uuId: '23', type: 'directory', isActive: true}
-      },
-  
-    ];
-
+     
     this.files.forEach(file => {
       if(file.fileType.type == 'directory'){
 
@@ -78,21 +48,25 @@ export class ContentComponent implements OnInit {
 
   }
 
-  rowClick(file: FilesDto){
+  rowClick(rowId: string){
+    this.selectedTableEntityId = rowId;
+  }
+
+  rowDoubleClick(file: FilesDto){
 
     if(file.fileType.type == 'directory')
     {
-      alert("Navigation to diretory : " + file.uuId);
+      alert("Navigation to diretory : " + file.id);
     }
     
     if(file.fileType.type == 'video')
     {
-      alert("Previewing video : " + file.uuId);
+      alert("Previewing video : " + file.id);
     }
 
     if(file.fileType.type == "audio"){
 
-      alert("Previewing audio : " + file.uuId);
+      alert("Previewing audio : " + file.id);
     }
   }
 
@@ -103,8 +77,6 @@ export class ContentComponent implements OnInit {
   }
 
   onRightClick(event: MouseEvent){
-    // event.preventDefault();
-
-    // this.options.toggleMenu();
+    
   }
 }

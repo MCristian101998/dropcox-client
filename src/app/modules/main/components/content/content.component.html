@@ -16,7 +16,7 @@
                   The actual rendered columns are set as a property on the row definition" -->
           
             <ng-container matColumnDef="fileName">
-              <th mat-header-cell *matHeaderCellDef> Name </th>
+              <th mat-header-cell *matHeaderCellDef class="nameColumn"> Name </th>
               <td mat-cell *matCellDef="let file">
                     <img src="{{file.image}}">
                    {{file.fileName}} 
@@ -34,7 +34,12 @@
             </ng-container>
           
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;" (dblclick) = "rowClick(row)"></tr>
+            <tr 
+                mat-row 
+                *matRowDef="let row; columns: displayedColumns;"
+                (click) = "rowClick(row.id)"
+                (dblclick) = "rowDoubleClick(row)"
+                [ngClass] = "{'selected': selectedTableEntityId == row.id}"></tr>
           </table>
 
     </div>

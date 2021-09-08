@@ -1,5 +1,7 @@
 export class DirectoriesDto{
-    uuId!: string;
-    name!: string;
-    children?: DirectoriesDto[];
+    id!: string;
+    fileName!: string;
+    parentId?: string;
+    path!: string;
+    subfolders?: DirectoriesDto[];
 }

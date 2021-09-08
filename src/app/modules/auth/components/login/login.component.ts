@@ -63,8 +63,6 @@ export class LoginComponent implements OnInit {
 
     this.loading = true;
 
-    alert("mare submit");
-
     var loginData = new LoginDto();
     loginData.username = this.username?.value;
     loginData.password = this.password?.value;

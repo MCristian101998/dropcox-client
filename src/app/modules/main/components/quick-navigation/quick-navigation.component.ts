@@ -1,68 +1,11 @@
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { Component, OnInit } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
+import { SnackBarService } from 'src/app/shared/services/snackBarService';
+import { UserService } from 'src/app/shared/services/user.service';
 import { DirectoriesDto } from '../../models/DirectoriesDto';
-
-const TREE_DATA: DirectoriesDto[] = [
-  {
-    uuId: '1',
-    name: 'Fruit',
-    children: [
-      {
-        uuId: '10',
-        name: 'Apple'
-      },
-      {
-        uuId: '11',
-        name: 'Banana'
-      },
-
-      {
-        uuId: '12',
-        name: 'Fruit loops'
-      },
-    ]
-  }, {
-    uuId: '2',
-    name: 'Vegetables',
-    children: [
-      {
-        uuId: '20',
-        name: 'Green',
-        children: [
-          {uuId: '30', name: 'Broccoli'},
-          {uuId: '34', name: 'Brussels sprouts', children: [{
-            uuId: '2',
-            name: 'Vegetables',
-            children: [
-              {
-                uuId: '20',
-                name: 'Green',
-                children: [
-                  {uuId: '30', name: 'Broccoli'},
-                  {uuId: '34', name: 'Brussels sprouts', children: [{
-                    uuId: '2',
-                    name: 'Vegetables',
-                    children: [
-                      {
-                        uuId: '20',
-                        name: 'Green',
-                        children: [
-                          {uuId: '30', name: 'Broccoli'},
-                          {uuId: '34', name: 'Brussels sprouts'},
-                        ]
-                      }, 
-                    ]
-                  },]},
-                ]
-              }, 
-            ]
-          },]},
-        ]
-      }, 
-    ]
-  },
-];
+import { ContentService } from '../../services/content.service';
+import { QuickNavigationService } from '../../services/quick-navigation.service';
 
 @Component({
   selector: 'app-quick-navigation',
@@ -71,24 +14,32 @@ const TREE_DATA: DirectoriesDto[] = [
 })
 export class QuickNavigationComponent implements OnInit {
 
-  treeControl = new NestedTreeControl<DirectoriesDto>(node => node.children);
+  treeControl = new NestedTreeControl<DirectoriesDto>(node => node.subfolders);
   dataSource = new MatTreeNestedDataSource<DirectoriesDto>();
 
-  hasChild = (_: number, node: DirectoriesDto) => !!node.children && node.children.length > 0;
+  hasChild = (_: number, node: DirectoriesDto) => !!node.subfolders && node.subfolders.length > 0;
 
-  constructor() {
+  constructor(
+    private userService: UserService,
+    private contentService: ContentService,
+    private snackBarService: SnackBarService) {
 
-    this.dataSource.data = TREE_DATA;
   }
 
   ngOnInit(): void {
+
+    const currentUser = this.userService.getCurrentUser();
+
+    if(currentUser == null){
+      this.snackBarService.openSnackBar('Something went wrong ! Please Reload');
+      return;
+    }
+
+    this.contentService.populateDirectories();
+    this.dataSource.data = this.contentService.directories;
   }
 
   nodeClicked(node: DirectoriesDto){
-
-
-
-    alert(node.name);
+    this.contentService.navigateToFolder(node);
   }
-
 }
