@@ -12,9 +12,6 @@
         
         <table mat-table [dataSource]="files" class="mat-elevation-z8">
 
-            <!--- Note that these columns can be defined in any order.
-                  The actual rendered columns are set as a property on the row definition" -->
-          
             <ng-container matColumnDef="fileName">
               <th mat-header-cell *matHeaderCellDef class="nameColumn"> Name </th>
               <td mat-cell *matCellDef="let file">
@@ -34,7 +31,8 @@
             </ng-container>
           
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr 
+            <tr
+                (contextmenu) = "rowRightClick($event)"
                 mat-row 
                 *matRowDef="let row; columns: displayedColumns;"
                 (click) = "rowClick(row.id)"
@@ -51,26 +49,57 @@
 </div>
 
 <div class="uploadingFile" *ngIf = "isInDrag">
-
     <div class="uploadingFileContainer">
         <div class="image">
             <img src = "/assets/images/upload.png">
         </div>
-    
         <div class="text">
             <h4>Drop to upload.</h4>
         </div>
     </div>
-
 </div>
 
 <mat-menu 
-    #options="matMenu"
-    [overlapTrigger] = true
-    [hasBackdrop] = false>
-    <button mat-menu-item>
+    #options="matMenu">
+    <button mat-menu-item (click) = "openCreateFolderDirectory()">
       <mat-icon>add</mat-icon>
       <span>Add Folder</span>
     </button>
+</mat-menu>
+
+<mat-menu
+    #details="matMenu">
+
+    <button mat-menu-item>
+        <mat-icon>drive_file_rename_outline</mat-icon>
+        <span>Rename</span>
+    </button>
+
+    <button mat-menu-item>
+        <mat-icon>delete</mat-icon>
+        <span>Delete</span>
+    </button>
+
+    <button mat-menu-item>
+        <mat-icon>file_download</mat-icon>
+        <span>Download</span>
+    </button>
+
 
 </mat-menu>
+
+
+<div class="contentMenu"
+    style="visibility: hidden; position: fixed;" 
+    [style.left]="menuTopLeftPosition.x" 
+    [style.top]="menuTopLeftPosition.y" 
+    [matMenuTriggerFor]="options">
+</div>
+
+<div
+    class="tableRowRightClick"
+    style="visibility: hidden; position: fixed;" 
+    [style.left]="rowRightClickMenuPosition.x" 
+    [style.top]="rowRightClickMenuPosition.y" 
+    [matMenuTriggerFor]="details">
+</div>

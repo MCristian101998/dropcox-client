@@ -1,9 +1,10 @@
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-import { Component, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, QueryList, ViewChild } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
+import { FolderDialogData } from '../../models/AddFolderDialogData';
 import { FilesDto } from '../../models/FilesDto';
 import { FileTypeDto } from '../../models/FileTypeDto';
 import { ContentService } from '../../services/content.service';
+import { DialogService } from '../../services/dialog.service';
 
 @Component({
   selector: 'app-content',
@@ -15,14 +16,23 @@ export class ContentComponent implements OnInit, OnDestroy {
   fileTypes: FileTypeDto[] = [];
   files: FilesDto[] = [];
   currentFolderUuid:string = "";
+  currentFolderName: string = "";
   selectedTableEntityId: string = "";
 
   displayedColumns: string[] = ['fileName', 'owner', 'lastModified'];
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
+  rowRightClickMenuPosition = {x: '0', y: '0'}
+
+
   isInDrag: boolean = false;
 
-  constructor(private contentService: ContentService) { }
+  @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: QueryList<MatMenuTrigger>;
+
+  constructor(
+    private contentService: ContentService,
+    private dialogService: DialogService
+  ) { }
  
 
   uploadFile(evt: any){
@@ -37,11 +47,13 @@ export class ContentComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     
     this.currentFolderUuid = this.contentService.currentFolderId;
+    this.currentFolderName = this.contentService.currentFolderName;
 
     this.contentService.navigatedToDirectory.subscribe((data) => {
 
       this.files = this.contentService.currentFolderContent;
       this.currentFolderUuid = this.contentService.currentFolderId;
+      this.currentFolderName = this.contentService.currentFolderName;
       this.files.forEach(file => {
   
         if(file.fileType.type == 'directory'){
@@ -78,6 +90,15 @@ export class ContentComponent implements OnInit, OnDestroy {
     }
   }
 
+  rowRightClick(event: MouseEvent){
+
+    event.preventDefault();
+
+    this.menuTopLeftPosition.x = event.clientX + 'px'; 
+    this.menuTopLeftPosition.y = event.clientY + 'px'; 
+
+  }
+
   onDragEnter(event:any){
     this.isInDrag = event;
 
@@ -85,6 +106,29 @@ export class ContentComponent implements OnInit, OnDestroy {
   }
 
   onRightClick(event: MouseEvent){
-    
+
+    if(this.currentFolderUuid == '' || this.currentFolderName == '')
+    {
+      return;
+    }
+
+    event.preventDefault();
+
+    this.menuTopLeftPosition.x = event.clientX + 'px'; 
+    this.menuTopLeftPosition.y = event.clientY + 'px'; 
+
+    this.matMenuTrigger.toArray()[0].toggleMenu();
   }
+
+  openCreateFolderDirectory(){
+
+    var newFolderData = new FolderDialogData();
+    newFolderData.folderId = this.currentFolderUuid;
+    newFolderData.folderName = this.currentFolderName;
+
+    this.dialogService.openNewFolderDialog(newFolderData);
+
+  }
+  
+
 }

@@ -1,4 +1,4 @@
 export class RenameFileDto{
-    uuId!: string;
+    id!: string;
     newName!: string;
 }

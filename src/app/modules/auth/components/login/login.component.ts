@@ -80,7 +80,7 @@ export class LoginComponent implements OnInit {
 
           this.loading = false;
           console.error(err);
-          this.snackBarService.openSnackBar(err.message);
+          this.snackBarService.openSnackBar("Wrong username or password !");
         }
       });
   }

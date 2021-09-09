@@ -1,15 +1,16 @@
 <mat-toolbar color="primary">
-   <span>My App</span>
+   <img class="logo" src = "/assets/images/logo.png">
 
    <button 
         mat-icon-button
+        matTooltip = "Toggle Sidenav"
         (click) = "toggleSidenav()">
         <mat-icon>menu</mat-icon>
     </button>
 
    <span class="spacer"></span>
 
-    <button mat-icon-button [matMenuTriggerFor] = "menu">
+    <button mat-icon-button [matMenuTriggerFor] = "menu" matTooltip = "User Settings">
         <mat-icon>person</mat-icon>
     </button>
     
@@ -29,7 +30,7 @@
                 <span>Edit Profile</span>
             </button> -->
 
-            <button mat-menu-item>
+            <button mat-menu-item (click) = "logOut()">
                 <mat-icon>logout</mat-icon>
                 <span>Log Out</span>
             </button>

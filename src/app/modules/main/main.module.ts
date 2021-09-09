@@ -15,11 +15,12 @@ import { UserService } from 'src/app/shared/services/user.service';
 import { UploadDirective } from 'src/app/directives/fileUpload.directive';
 import { QuickNavigationComponent } from './components/quick-navigation/quick-navigation.component';
 import { NewFolderDialogComponent } from './components/modals/new-folder-dialog/new-folder-dialog.component';
-import { NewFolderDialogService } from './services/new-folder-dialog.service';
+import { DialogService } from './services/dialog.service';
 import { HttpModule } from 'src/app/shared/modules/http.module';
 import { QuickNavigationService } from './services/quick-navigation.service';
 import { SnackBarService } from 'src/app/shared/services/snackBarService';
 import { ContentService } from './services/content.service';
+import { RenameFileComponent } from './components/modals/rename-file/rename-file.component';
 
 
 @NgModule({
@@ -33,6 +34,7 @@ import { ContentService } from './services/content.service';
     UploadDirective,
     QuickNavigationComponent,
     NewFolderDialogComponent,
+    RenameFileComponent,
   ],
   imports: [
     CommonModule,
@@ -44,7 +46,7 @@ import { ContentService } from './services/content.service';
   providers:[
     SidenavSerive,
     UserService,
-    NewFolderDialogService,
+    DialogService,
     QuickNavigationService,
     SnackBarService,
     ContentService

@@ -4,6 +4,7 @@ import { AppUserDto } from "src/app/shared/models/AppUserDto";
 import { SnackBarService } from "src/app/shared/services/snackBarService";
 import { UserService } from "src/app/shared/services/user.service";
 import { environment } from "src/environments/environment";
+import { CreateFolderDto } from "../models/CreateFolderDto";
 import { DirectoriesDto } from "../models/DirectoriesDto";
 import { FilesDto } from "../models/FilesDto";
 
@@ -18,6 +19,7 @@ export class ContentService{
     public currentFolderPath: string = '';
     public currentFolderHasParent: boolean = false;
     public currentFolderParentId:string = '';
+    public currentFolderName:string = '';
 
     directoriesLoaded = new EventEmitter<DirectoriesDto[]>();
     navigatedToDirectory= new EventEmitter<DirectoriesDto>();
@@ -42,8 +44,7 @@ export class ContentService{
         .subscribe({
 
             next: (resp) => {
-
-
+                
                 this.directories = resp.directories;
                 this.directoriesLoaded.emit(resp.directories);
             },
@@ -58,13 +59,7 @@ export class ContentService{
     navigateToFolder(folderId:string){
 
         this.currentFolderId = folderId;
-        //this.currentFolderPath = path;
         
-        // if(parentId !== undefined){
-        //     this.currentFolderParentId = parentId;
-        //     this.currentFolderHasParent = true;
-        //}
-
         this.http.get<any>(environment.apiBaseUrl + "folders/content/" + folderId)
             .subscribe({
 
@@ -73,6 +68,7 @@ export class ContentService{
                     this.currentFolderId = resp.parentDirectory.id;
                     this.currentFolderPath = resp.parentDirectory.path;
                     this.currentFolderParentId = resp.parentDirectory.parentId;
+                    this.currentFolderName = resp.parentDirectory.fileName;
 
                     if(this.currentFolderParentId !== undefined){
                         this.currentFolderHasParent = true;
@@ -84,12 +80,25 @@ export class ContentService{
 
                     this.currentFolderContent = resp.files;
                     this.navigatedToDirectory.emit(resp);
-
-                    //detalii despre parinte
                 },
 
                 error: (err) => {
 
+                    console.error(err);
+                    this.snackBarService.openSnackBar('Something went wrong ! Please reload.')
+                }
+            });
+    }
+
+    createFolder(folderToCreate: CreateFolderDto){
+        this.http.post(environment.apiBaseUrl + "folders", folderToCreate)
+            .subscribe({
+                next: (resp) => {
+
+                    this.navigateToFolder(folderToCreate.folderId);
+                    this.populateDirectories();
+                },
+                error: (err) => {
                     console.error(err);
                     this.snackBarService.openSnackBar('Something went wrong ! Please reload.')
                 }
