@@ -7,6 +7,7 @@ import { environment } from "src/environments/environment";
 import { CreateFolderDto } from "../models/CreateFolderDto";
 import { DirectoriesDto } from "../models/DirectoriesDto";
 import { FilesDto } from "../models/FilesDto";
+import { RenameFileDto } from "../models/RenameFileDto";
 
 @Injectable()
 export class ContentService{
@@ -95,13 +96,44 @@ export class ContentService{
             .subscribe({
                 next: (resp) => {
 
-                    this.navigateToFolder(folderToCreate.folderId);
                     this.populateDirectories();
+                    this.navigateToFolder(folderToCreate.folderId);
                 },
                 error: (err) => {
                     console.error(err);
                     this.snackBarService.openSnackBar('Something went wrong ! Please reload.')
                 }
             });
+    }
+
+    renameFile(fileToRename: RenameFileDto){
+
+        this.http.put<any>(environment.apiBaseUrl + "folders", fileToRename)
+            .subscribe({
+                next: (resp) => {
+
+                    this.populateDirectories();
+                    this.navigateToFolder(this.currentFolderId);
+                },
+                error: (err) => {
+                    console.error(err);
+                    this.snackBarService.openSnackBar('Something went wrong ! Please reload.')
+                }
+            })
+    }
+
+    deleteFile(fileId: string){
+        this.http.delete<any>(environment.apiBaseUrl + "folders/" + fileId)
+            .subscribe({
+
+                next: (resp) => {
+                    this.populateDirectories();
+                    this.navigateToFolder(this.currentFolderId);
+                },
+                error: (err) => {
+                    console.error(err);
+                    this.snackBarService.openSnackBar('Something went wrong ! Please reload.')
+                }
+            })
     }
 }

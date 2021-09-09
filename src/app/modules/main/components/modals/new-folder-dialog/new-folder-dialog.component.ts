@@ -10,7 +10,7 @@ import { ContentService } from '../../../services/content.service';
   templateUrl: './new-folder-dialog.component.html',
   styleUrls: ['./new-folder-dialog.component.css']
 })
-export class NewFolderDialogComponent implements OnInit {
+export class NewFolderDialogComponent{
 
   folderName: FormControl = new FormControl('', [Validators.required]);
 
@@ -33,10 +33,7 @@ export class NewFolderDialogComponent implements OnInit {
     this.folderName.setValue('New Folder');
     this.dialogTitle = "Create folder in " + data.folderName;
   }
-
-  ngOnInit(): void {
-  } 
-
+  
   createFolder(){
 
     if(this.folderName.invalid){

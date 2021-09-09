@@ -7,8 +7,7 @@
     <div class="content"
         appUpload 
         (onFileDropped)="uploadFile($event)"
-        (onDragEnter) = "onDragEnter($event)"
-        (contextmenu) = "onRightClick($event)">
+        (onDragEnter) = "onDragEnter($event)">
         
         <table mat-table [dataSource]="files" class="mat-elevation-z8">
 
@@ -32,9 +31,9 @@
           
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr
-                (contextmenu) = "rowRightClick($event)"
                 mat-row 
                 *matRowDef="let row; columns: displayedColumns;"
+                (contextmenu) = "rowRightClick($event, row)"
                 (click) = "rowClick(row.id)"
                 (dblclick) = "rowDoubleClick(row)"
                 [ngClass] = "{'selected': selectedTableEntityId == row.id}"></tr>
@@ -70,26 +69,31 @@
 <mat-menu
     #details="matMenu">
 
-    <button mat-menu-item>
+    <button 
+        mat-menu-item
+        (click) = "renameFile()">
         <mat-icon>drive_file_rename_outline</mat-icon>
         <span>Rename</span>
     </button>
 
-    <button mat-menu-item>
+    <button 
+        mat-menu-item
+        (click) = "deleteFile()">
         <mat-icon>delete</mat-icon>
         <span>Delete</span>
     </button>
 
-    <button mat-menu-item>
+    <button 
+        mat-menu-item
+        (click) = "downloadFile()">
         <mat-icon>file_download</mat-icon>
         <span>Download</span>
     </button>
-
-
 </mat-menu>
 
-
-<div class="contentMenu"
+<div 
+    class="contentMenu"
+    #optionsTrigger = "matMenuTrigger"
     style="visibility: hidden; position: fixed;" 
     [style.left]="menuTopLeftPosition.x" 
     [style.top]="menuTopLeftPosition.y" 
@@ -97,6 +101,7 @@
 </div>
 
 <div
+    #rightClickRowTrigger = "matMenuTrigger"
     class="tableRowRightClick"
     style="visibility: hidden; position: fixed;" 
     [style.left]="rowRightClickMenuPosition.x" 

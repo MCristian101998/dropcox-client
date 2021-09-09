@@ -21,6 +21,7 @@ import { QuickNavigationService } from './services/quick-navigation.service';
 import { SnackBarService } from 'src/app/shared/services/snackBarService';
 import { ContentService } from './services/content.service';
 import { RenameFileComponent } from './components/modals/rename-file/rename-file.component';
+import { DeleteFileComponent } from './components/modals/delete-file/delete-file.component';
 
 
 @NgModule({
@@ -35,6 +36,7 @@ import { RenameFileComponent } from './components/modals/rename-file/rename-file
     QuickNavigationComponent,
     NewFolderDialogComponent,
     RenameFileComponent,
+    DeleteFileComponent,
   ],
   imports: [
     CommonModule,

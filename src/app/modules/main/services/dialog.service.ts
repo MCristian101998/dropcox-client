@@ -1,5 +1,6 @@
 import { EventEmitter, Injectable } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
+import { DeleteFileComponent } from "../components/modals/delete-file/delete-file.component";
 import { NewFolderDialogComponent } from "../components/modals/new-folder-dialog/new-folder-dialog.component";
 import { RenameFileComponent } from "../components/modals/rename-file/rename-file.component";
 import { FolderDialogData } from "../models/AddFolderDialogData";
@@ -27,6 +28,15 @@ export class DialogService{
 
         const dialogRef = this.dialog.open(RenameFileComponent, {
             data: renameFolderData
+        })
+    }
+
+    openDeleteFileDialog(fileId: string, fileName: string){
+        const dialogRef = this.dialog.open(DeleteFileComponent,{
+            data: {
+                fileId : fileId,
+                fileName: fileName
+            }
         })
     }
 

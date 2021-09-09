@@ -24,10 +24,13 @@ export class ContentComponent implements OnInit, OnDestroy {
   menuTopLeftPosition =  {x: '0', y: '0'} 
   rowRightClickMenuPosition = {x: '0', y: '0'}
 
+  rightClickedRow: FilesDto = new FilesDto();
+
 
   isInDrag: boolean = false;
 
-  @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: QueryList<MatMenuTrigger>;
+  @ViewChild('optionsTrigger') matMenuTrigger!: MatMenuTrigger;
+  @ViewChild('rightClickRowTrigger') rowRightClickTrigger!: MatMenuTrigger;
 
   constructor(
     private contentService: ContentService,
@@ -90,12 +93,16 @@ export class ContentComponent implements OnInit, OnDestroy {
     }
   }
 
-  rowRightClick(event: MouseEvent){
+  rowRightClick(event: MouseEvent, row: FilesDto){
 
     event.preventDefault();
 
-    this.menuTopLeftPosition.x = event.clientX + 'px'; 
-    this.menuTopLeftPosition.y = event.clientY + 'px'; 
+    this.rowRightClickMenuPosition.x = event.clientX + 'px'; 
+    this.rowRightClickMenuPosition.y = event.clientY + 'px'; 
+
+    this.rightClickedRow = row;
+
+    this.rowRightClickTrigger.toggleMenu();
 
   }
 
@@ -117,7 +124,7 @@ export class ContentComponent implements OnInit, OnDestroy {
     this.menuTopLeftPosition.x = event.clientX + 'px'; 
     this.menuTopLeftPosition.y = event.clientY + 'px'; 
 
-    this.matMenuTrigger.toArray()[0].toggleMenu();
+    this.matMenuTrigger.toggleMenu();
   }
 
   openCreateFolderDirectory(){
@@ -127,8 +134,23 @@ export class ContentComponent implements OnInit, OnDestroy {
     newFolderData.folderName = this.currentFolderName;
 
     this.dialogService.openNewFolderDialog(newFolderData);
+  }
+
+  renameFile(){
+
+    var dialogData = new FolderDialogData();
+    dialogData.folderId = this.rightClickedRow.id;
+    dialogData.folderName = this.rightClickedRow.fileName;
+
+    this.dialogService.openRenameFileDialog(dialogData);
+  }
+
+  deleteFile(){
+
+    this.dialogService.openDeleteFileDialog(this.rightClickedRow.id, this.rightClickedRow.fileName);
+  }
+
+  downloadFile(){
 
   }
-  
-
 }

@@ -1,0 +1,10 @@
+<h2 mat-dialog-title>Delete File</h2>
+<mat-dialog-content>
+  <h4>{{dialogTitle}}</h4>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+
+  <button mat-button mat-dialog-close>Cancel</button>
+  
+  <button mat-raised-button color="primary" (click) = "delete()"  cdkFocusInitial>Delete</button>
+</mat-dialog-actions>

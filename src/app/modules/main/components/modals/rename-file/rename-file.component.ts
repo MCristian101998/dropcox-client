@@ -1,7 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FolderDialogData } from '../../../models/AddFolderDialogData';
+import { RenameFileDto } from '../../../models/RenameFileDto';
+import { ContentService } from '../../../services/content.service';
 
 
 @Component({
@@ -25,9 +27,11 @@ export class RenameFileComponent implements OnInit {
   }
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: FolderDialogData
+    @Inject(MAT_DIALOG_DATA) public data: FolderDialogData,
+    private dialogRef: MatDialogRef<RenameFileComponent>,
+    private contentService: ContentService
   ) {
-    this.folderName.setValue('New Folder');
+    this.folderName.setValue(data.folderName);
     this.dialogTitle = "Rename " + data.folderName;
     this.fileName = data.folderName;
   }
@@ -41,8 +45,19 @@ export class RenameFileComponent implements OnInit {
       return;
     }
 
-    //request api to create folder 
+    if(this.folderName.value == this.fileName)
+    {
+      this.dialogRef.close();
+    }
+    else{
 
+      var fileToRename = new RenameFileDto();
+      fileToRename.id = this.data.folderId;
+      fileToRename.newName = this.folderName.value;
+
+      this.contentService.renameFile(fileToRename);
+
+      this.dialogRef.close();
+    }
   }
-
 }
