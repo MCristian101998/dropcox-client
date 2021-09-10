@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpEvent, HttpEventType, HttpHeaders } from "@angular/common/http";
 import { Injectable,EventEmitter } from "@angular/core";
 import { AppUserDto } from "src/app/shared/models/AppUserDto";
 import { SnackBarService } from "src/app/shared/services/snackBarService";
@@ -135,5 +135,40 @@ export class ContentService{
                     this.snackBarService.openSnackBar('Something went wrong ! Please reload.')
                 }
             })
+    }
+
+    uploadFile(fileId: string, files: FormData){
+
+        var progress = 0;
+
+        this.http.post<any>(environment.apiBaseUrl + "/folders/file-upload/" + fileId, files,{
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+            reportProgress: true,
+            observe: 'events'
+        })
+        .subscribe((event: HttpEvent<any>) => {
+            switch (event.type) {
+              case HttpEventType.Sent:
+                console.log('Request has been made!');
+                break;
+              case HttpEventType.ResponseHeader:
+                console.log('Response header has been received!');
+                break;
+              case HttpEventType.UploadProgress:
+                if(event.total !== undefined){
+                    progress = Math.round(event.loaded / event.total * 100);
+                    console.log(`Uploaded! ${progress}%`);
+                }
+                break;
+              case HttpEventType.Response:
+                console.log('User successfully created!', event.body);
+                setTimeout(() => {
+                  progress = 0;
+                }, 1500);
+      
+            }});
+
     }
 }

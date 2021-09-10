@@ -45,6 +45,7 @@ export class ContentComponent implements OnInit, OnDestroy {
     payload.append('data', evt[0]);
     // File can now be uploaded by doing an http post with the payload
 
+    this.contentService.uploadFile(this.currentFolderUuid, payload);
   }
 
   ngOnInit(): void {
@@ -97,6 +98,8 @@ export class ContentComponent implements OnInit, OnDestroy {
 
     event.preventDefault();
 
+    this.rowClick(row.id);
+
     this.rowRightClickMenuPosition.x = event.clientX + 'px'; 
     this.rowRightClickMenuPosition.y = event.clientY + 'px'; 
 
@@ -108,8 +111,6 @@ export class ContentComponent implements OnInit, OnDestroy {
 
   onDragEnter(event:any){
     this.isInDrag = event;
-
-    console.log("is in drag " + event);
   }
 
   onRightClick(event: MouseEvent){
