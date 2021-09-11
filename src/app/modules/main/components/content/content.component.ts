@@ -38,12 +38,19 @@ export class ContentComponent implements OnInit, OnDestroy {
   ) { }
  
 
-  uploadFile(evt: any){
+  uploadFile(evt: File[]){
     console.log('evt: ', evt);
     // evt is an array of the file(s) dropped on our div. Here we're assuming only one file has been uploaded
+
+    var i = 1;
+
     let payload = new FormData();
-    payload.append('data', evt[0]);
-    // File can now be uploaded by doing an http post with the payload
+
+    evt.forEach(file => {
+
+      payload.append('file' + i, file);
+      i++;
+    });
 
     this.contentService.uploadFile(this.currentFolderUuid, payload);
   }

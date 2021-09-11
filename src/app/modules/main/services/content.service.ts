@@ -141,9 +141,9 @@ export class ContentService{
 
         var progress = 0;
 
-        this.http.post<any>(environment.apiBaseUrl + "/folders/file-upload/" + fileId, files,{
+        this.http.post<any>(environment.apiBaseUrl + "folders/file-upload/" + fileId, files,{
             headers: {
-                'Content-Type': 'multipart/form-data'
+                'Content-Type': 'multipart/form-data; boundary="----arbitrary boundary"'
             },
             reportProgress: true,
             observe: 'events'
@@ -163,12 +163,13 @@ export class ContentService{
                 }
                 break;
               case HttpEventType.Response:
-                console.log('User successfully created!', event.body);
+
+                this.populateDirectories();
+                this.navigateToFolder(this.currentFolderId);
+
                 setTimeout(() => {
                   progress = 0;
                 }, 1500);
-      
             }});
-
     }
 }
