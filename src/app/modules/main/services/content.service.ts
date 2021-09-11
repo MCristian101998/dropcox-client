@@ -143,7 +143,8 @@ export class ContentService{
 
         this.http.post<any>(environment.apiBaseUrl + "folders/file-upload/" + fileId, files,{
             headers: {
-                'Content-Type': 'multipart/form-data; boundary="----arbitrary boundary"'
+                'Content-Type': 'null',
+                'Accept': 'multipart/form-data'
             },
             reportProgress: true,
             observe: 'events'

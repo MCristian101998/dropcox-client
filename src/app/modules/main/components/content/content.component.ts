@@ -43,15 +43,12 @@ export class ContentComponent implements OnInit, OnDestroy {
     if(evt && evt[0])
     {
       const filesArray = Array.from(evt);
-      
-      var i = 1;
 
       var payload = new FormData();
 
       filesArray.forEach(file => {
 
-        payload.append('file' + i, file);
-        i++;
+        payload.append('files', file);
       })
 
      this.contentService.uploadFile(this.currentFolderUuid, payload);
