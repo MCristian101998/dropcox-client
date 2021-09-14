@@ -57,6 +57,9 @@ export class RegisterComponent implements OnInit {
     else if(this.email?.hasError('email')){
       return "You must enter a valid email address !";
     }
+    else if(this.email?.hasError('emailExists')){
+      return "This email is already in use !";
+    }
 
     return "";
   }
@@ -65,6 +68,10 @@ export class RegisterComponent implements OnInit {
 
     if(this.username?.hasError('required')){
       return "You must enter a value !";
+    }
+
+    if(this.username?.hasError('usernameExists')){
+      return "This username is already in use !";
     }
 
     return "";
@@ -125,6 +132,70 @@ export class RegisterComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+  }
+
+  checkEmail(event: any){
+
+    if(this.email?.hasError('required') || this.email?.hasError('email')) { return; }
+
+    var emailValue:string = event.target.value;
+
+    if(emailValue === "") { return; }
+
+    this.authService.checkEmail(emailValue)
+      .subscribe({
+        next: (resp) => {
+          
+          if(resp == true)
+          {
+            this.email?.setErrors({'emailExists' : true});
+          }
+          else
+          {
+            this.email?.setErrors({'emailExists' : null});
+            this.email?.updateValueAndValidity();
+          }
+
+        },
+        error: (err) => {
+
+          console.error(err);
+          this.snackBarService.openSnackBar("Something went wrong. Please reload.");
+        }
+      })
+
+  }
+
+  checkUserName(event: any){
+    if(this.username?.hasError('required')) { return; }
+
+    var usernameValue:string = event.target.value;
+
+    if(usernameValue === "") { return; }
+
+    this.authService.checkUsername(usernameValue)
+      .subscribe({
+        next: (resp) => {
+          
+          if(resp == true)
+          {
+            
+            this.username?.setErrors({'usernameExists' : true});
+          }
+          else
+          {
+            this.username?.setErrors({'usernameExists' : null});
+            this.username?.updateValueAndValidity();
+          }
+
+        },
+        error: (err) => {
+
+          console.error(err);
+          this.snackBarService.openSnackBar("Something went wrong. Please reload.");
+        }
+      })
+
   }
 
   submit(){

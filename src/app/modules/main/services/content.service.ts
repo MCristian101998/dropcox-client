@@ -21,6 +21,7 @@ export class ContentService{
     public currentFolderHasParent: boolean = false;
     public currentFolderParentId:string = '';
     public currentFolderName:string = '';
+    public userRootFolderId: string = '';
 
     directoriesLoaded = new EventEmitter<DirectoriesDto[]>();
     navigatedToDirectory= new EventEmitter<DirectoriesDto>();
@@ -92,6 +93,10 @@ export class ContentService{
     }
 
     createFolder(folderToCreate: CreateFolderDto){
+
+        // alert("content service current folder id " + this.currentFolderId);
+        // alert("folder to create dto folder id " + this.currentFolderId);
+
         this.http.post(environment.apiBaseUrl + "folders", folderToCreate)
             .subscribe({
                 next: (resp) => {
@@ -142,10 +147,6 @@ export class ContentService{
         var progress = 0;
 
         this.http.post<any>(environment.apiBaseUrl + "folders/file-upload/" + fileId, files,{
-            headers: {
-                'Content-Type': 'null',
-                'Accept': 'multipart/form-data'
-            },
             reportProgress: true,
             observe: 'events'
         })

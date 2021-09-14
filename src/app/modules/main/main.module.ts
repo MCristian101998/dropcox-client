@@ -22,6 +22,7 @@ import { SnackBarService } from 'src/app/shared/services/snackBarService';
 import { ContentService } from './services/content.service';
 import { RenameFileComponent } from './components/modals/rename-file/rename-file.component';
 import { DeleteFileComponent } from './components/modals/delete-file/delete-file.component';
+import { CheckFolderNameService } from './services/check-foldername.service';
 
 
 @NgModule({
@@ -51,7 +52,8 @@ import { DeleteFileComponent } from './components/modals/delete-file/delete-file
     DialogService,
     QuickNavigationService,
     SnackBarService,
-    ContentService
+    ContentService,
+    CheckFolderNameService
   ]
 })
 export class MainModule { }

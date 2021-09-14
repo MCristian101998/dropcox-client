@@ -1,8 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { SnackBarService } from 'src/app/shared/services/snackBarService';
 import { FolderDialogData } from '../../../models/AddFolderDialogData';
 import { RenameFileDto } from '../../../models/RenameFileDto';
+import { CheckFolderNameService } from '../../../services/check-foldername.service';
 import { ContentService } from '../../../services/content.service';
 
 
@@ -23,13 +25,20 @@ export class RenameFileComponent implements OnInit {
       return "You must enter a value !";
     }
 
+    if(this.folderName.hasError('nameExists')){
+
+      return "Folder name already exists !";
+    }
+
     return "";
   }
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: FolderDialogData,
     private dialogRef: MatDialogRef<RenameFileComponent>,
-    private contentService: ContentService
+    private contentService: ContentService,
+    private checkFolderNameService: CheckFolderNameService,
+    private snackBarService: SnackBarService,
   ) {
     this.folderName.setValue(data.folderName);
     this.dialogTitle = "Rename " + data.folderName;
@@ -39,9 +48,41 @@ export class RenameFileComponent implements OnInit {
   ngOnInit(): void {
   } 
 
+  folerNameChanged(event: any){
+
+    var folderName:string = event.target.value;
+
+    if(this.folderName.value === this.fileName) { return; }
+    if(folderName === "") { return }
+
+    this.checkFolderNameService.checkName(folderName)
+      .subscribe({
+        next : (resp) => {
+
+          if(resp == true){
+            this.folderName.setErrors({'nameExists' : resp});
+          }
+          else
+          {
+            this.folderName.setErrors({'nameExists' : null})
+            this.folderName.updateValueAndValidity();
+          }
+
+
+          console.log("resp " + resp);
+        },
+        error: (err) =>{
+          console.error(err);
+          this.snackBarService.openSnackBar("Something went wrong. Please reload !");
+        }
+      })
+   
+  }
+
   renameFile(){
 
     if(this.folderName.invalid){
+
       return;
     }
 
@@ -52,7 +93,7 @@ export class RenameFileComponent implements OnInit {
     else{
 
       var fileToRename = new RenameFileDto();
-      fileToRename.id = this.data.folderId;
+      fileToRename.folderId = this.data.folderId;
       fileToRename.newName = this.folderName.value;
 
       this.contentService.renameFile(fileToRename);

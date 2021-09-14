@@ -50,7 +50,7 @@ export class QuickNavigationComponent implements OnInit, OnDestroy {
           folder.fileName = "My drive";
           rootFolderId = folder.id;
 
-          this.contentService.navigateToFolder(rootFolderId);
+          //this.contentService.navigateToFolder(rootFolderId);
         }
 
         if(folder.fileName.toLowerCase() === 'shared'){

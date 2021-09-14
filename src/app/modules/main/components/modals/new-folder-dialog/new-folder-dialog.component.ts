@@ -1,8 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { SnackBarService } from 'src/app/shared/services/snackBarService';
 import { FolderDialogData } from '../../../models/AddFolderDialogData';
 import { CreateFolderDto } from '../../../models/CreateFolderDto';
+import { CheckFolderNameService } from '../../../services/check-foldername.service';
 import { ContentService } from '../../../services/content.service';
 
 @Component({
@@ -22,16 +24,52 @@ export class NewFolderDialogComponent{
       return "You must enter a value !";
     }
 
+    if(this.folderName.hasError('nameExists')){
+
+      return "Folder name already exists !";
+    }
+
     return "";
   }
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: FolderDialogData,
     private contentService: ContentService,
-    private dialogRef: MatDialogRef<NewFolderDialogComponent>
+    private dialogRef: MatDialogRef<NewFolderDialogComponent>,
+    private snackBarService: SnackBarService,
+    private checkFolderNameService: CheckFolderNameService
   ) {
     this.folderName.setValue('New Folder');
     this.dialogTitle = "Create folder in " + data.folderName;
+  }
+
+  folerNameChanged(event: any){
+    var folderName:string = event.target.value;
+
+    if(folderName === "") { return }
+
+    this.checkFolderNameService.checkName(folderName)
+      .subscribe({
+        next : (resp) => {
+
+          if(resp == true){
+            this.folderName.setErrors({'nameExists' : resp});
+          }
+          else
+          {
+            this.folderName.setErrors({'nameExists' : null})
+            this.folderName.updateValueAndValidity();
+          }
+
+
+          console.log("resp " + resp);
+        },
+        error: (err) =>{
+          console.error(err);
+          this.snackBarService.openSnackBar("Something went wrong. Please reload !");
+        }
+      })
+   
   }
   
   createFolder(){
@@ -48,5 +86,4 @@ export class NewFolderDialogComponent{
     
     this.dialogRef.close();
   }
-
 }

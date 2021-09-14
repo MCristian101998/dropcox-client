@@ -9,7 +9,8 @@
             matInput 
             placeholder="Ex. New Folder" 
             required 
-            [formControl] = "folderName">
+            [formControl] = "folderName"
+            (input) = "folerNameChanged($event)">
 
         <mat-error *ngIf = "folderName.invalid">
             {{getFolderNameErrors()}}

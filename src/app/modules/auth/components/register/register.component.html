@@ -58,7 +58,8 @@
                         required
                         type="email"
                         placeholder="Ex. john@doe.com"
-                        formControlName="email">
+                        formControlName="email"
+                        (input) = "checkEmail($event)">
         
                     <mat-error *ngIf="email?.invalid">
                         {{getEmailControlErrors()}}
@@ -78,7 +79,8 @@
                         required
                         type="text"
                         placeholder="Ex. username"
-                        formControlName="username">
+                        formControlName="username"
+                        (input) = "checkUserName($event)">
         
                     <mat-error *ngIf="username?.invalid">
                         {{getUsernameControlErrors()}}

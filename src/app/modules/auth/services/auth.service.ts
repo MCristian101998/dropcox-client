@@ -19,4 +19,12 @@ export class AuthService {
     
     return this.http.post<any>(environment.apiBaseUrl + "users/register", registerData);
   }
+
+  checkUsername(username:string){
+    return this.http.get(environment.apiBaseUrl + "users/username-exists/" + username);
+  }
+
+  checkEmail(email: string){
+    return this.http.get(environment.apiBaseUrl + "users/email-exists/" + email);
+  }
 }
