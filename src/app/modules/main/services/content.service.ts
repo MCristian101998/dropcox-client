@@ -153,10 +153,10 @@ export class ContentService{
         .subscribe((event: HttpEvent<any>) => {
             switch (event.type) {
               case HttpEventType.Sent:
-                console.log('Request has been made!');
+                // console.log('Request has been made!');
                 break;
               case HttpEventType.ResponseHeader:
-                console.log('Response header has been received!');
+                //console.log('Response header has been received!');
                 break;
               case HttpEventType.UploadProgress:
                 if(event.total !== undefined){

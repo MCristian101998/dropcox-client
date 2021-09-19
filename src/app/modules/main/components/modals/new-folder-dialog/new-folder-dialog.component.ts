@@ -40,7 +40,7 @@ export class NewFolderDialogComponent{
     private checkFolderNameService: CheckFolderNameService
   ) {
     this.folderName.setValue('New Folder');
-    this.dialogTitle = "Create folder in " + data.folderName;
+    this.dialogTitle = "Create folder";
   }
 
   folerNameChanged(event: any){
@@ -60,16 +60,12 @@ export class NewFolderDialogComponent{
             this.folderName.setErrors({'nameExists' : null})
             this.folderName.updateValueAndValidity();
           }
-
-
-          console.log("resp " + resp);
         },
         error: (err) =>{
           console.error(err);
           this.snackBarService.openSnackBar("Something went wrong. Please reload !");
         }
       })
-   
   }
   
   createFolder(){

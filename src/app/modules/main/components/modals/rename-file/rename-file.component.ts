@@ -41,7 +41,7 @@ export class RenameFileComponent implements OnInit {
     private snackBarService: SnackBarService,
   ) {
     this.folderName.setValue(data.folderName);
-    this.dialogTitle = "Rename " + data.folderName;
+    this.dialogTitle = "Rename ";
     this.fileName = data.folderName;
   }
 

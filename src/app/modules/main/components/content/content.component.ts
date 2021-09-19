@@ -42,6 +42,7 @@ export class ContentComponent implements OnInit, OnDestroy {
 
     if(evt && evt[0])
     {
+
       const filesArray = Array.from(evt);
 
       var payload = new FormData();

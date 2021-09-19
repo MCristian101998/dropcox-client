@@ -1,11 +1,37 @@
+.addButton{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  align-items: center; 
+
+  margin-top: 10px;
+}
+
+.addButton button{
+  box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%), 0 1px 3px 1px rgb(60 64 67 / 15%);
+  align-items: center;
+  background-color: #fff;
+  border: 1px solid transparent;
+  border-radius: 24px;
+  color: #3c4043;
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: .15px;
+  min-width: 120px;
+  padding: 0 24px 0 0;
+}
+
 .mat-tree{
-  padding-top: 20px
+  padding-top: 10px
 }
 
 .mat-tree-node {
     min-height: 25px;
     min-width: 30px;
 }
+
+
 
 .example-tree .mainNodes {
   padding-top: 5px;
