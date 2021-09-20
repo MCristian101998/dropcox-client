@@ -8,6 +8,8 @@ import { CreateFolderDto } from "../models/CreateFolderDto";
 import { DirectoriesDto } from "../models/DirectoriesDto";
 import { FilesDto } from "../models/FilesDto";
 import { RenameFileDto } from "../models/RenameFileDto";
+import { UploadProgressDto } from "../models/UploadProgressDto";
+import { UploadStatusDto } from "../models/UploadStatusDto";
 
 @Injectable()
 export class ContentService{
@@ -26,6 +28,7 @@ export class ContentService{
     directoriesLoaded = new EventEmitter<DirectoriesDto[]>();
     navigatedToDirectory= new EventEmitter<DirectoriesDto>();
     onInitialize = new EventEmitter<any>();
+    onFileUploading = new EventEmitter<UploadProgressDto>();
 
     constructor(
         private http: HttpClient,
@@ -43,8 +46,6 @@ export class ContentService{
     }
 
     populateDirectories(){
-
-        console.log("populateDirectories : userId : " + this.currentUser.id);
 
         this.http.get<any>(environment.apiBaseUrl + "folders/" + this.currentUser.id)
         .subscribe({
@@ -146,11 +147,11 @@ export class ContentService{
             })
     }
 
-    uploadFile(fileId: string, files: FormData){
+    uploadFile(fileId: string, file:File, formData: FormData){
 
         var progress = 0;
 
-        this.http.post<any>(environment.apiBaseUrl + "folders/file-upload/" + fileId, files,{
+        return this.http.post<any>(environment.apiBaseUrl + "folders/file-upload/" + fileId, formData,{
             reportProgress: true,
             observe: 'events'
         })
@@ -165,10 +166,12 @@ export class ContentService{
               case HttpEventType.UploadProgress:
                 if(event.total !== undefined){
                     progress = Math.round(event.loaded / event.total * 100);
-                    console.log(`Uploaded! ${progress}%`);
+                    this.onFileUploading.emit({file: file, progress: progress, status: UploadStatusDto.InProgress});
                 }
                 break;
               case HttpEventType.Response:
+
+                this.onFileUploading.emit({file: file, progress: progress, status: UploadStatusDto.Done});
 
                 this.populateDirectories();
                 this.navigateToFolder(this.currentFolderId);

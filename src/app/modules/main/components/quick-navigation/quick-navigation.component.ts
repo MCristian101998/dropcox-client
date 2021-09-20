@@ -94,14 +94,12 @@ export class QuickNavigationComponent implements OnInit {
 
       const filesArray = Array.from(element.files);
 
-      var payload = new FormData();
-
       filesArray.forEach(file => {
 
+        var payload = new FormData();
         payload.append('files', file);
+        this.contentService.uploadFile(this.contentService.currentFolderId,file, payload);
       })
-
-     this.contentService.uploadFile(this.contentService.currentFolderId, payload);
     }
   }
 }

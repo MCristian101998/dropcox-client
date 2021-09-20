@@ -3,6 +3,7 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { FolderDialogData } from '../../models/AddFolderDialogData';
 import { FilesDto } from '../../models/FilesDto';
 import { FileTypeDto } from '../../models/FileTypeDto';
+import { UploadProgressDto } from '../../models/UploadProgressDto';
 import { ContentService } from '../../services/content.service';
 import { DialogService } from '../../services/dialog.service';
 
@@ -17,6 +18,9 @@ export class ContentComponent implements OnInit {
   files: FilesDto[] = [];
   currentFolderUuid:string = "";
   currentFolderName: string = "";
+  uploadWindowClosedByUser: boolean = false;
+  uploadWindowsIsShown: boolean = false;
+  uploadFiles: UploadProgressDto[] = [];
 
   displayedColumns: string[] = ['fileName', 'owner', 'lastModified'];
 
@@ -44,20 +48,16 @@ export class ContentComponent implements OnInit {
 
       const filesArray = Array.from(evt);
 
-      var payload = new FormData();
-
       filesArray.forEach(file => {
 
+        var payload = new FormData();
         payload.append('files', file);
+        this.contentService.uploadFile(this.currentFolderUuid,file , payload);
       })
-
-     this.contentService.uploadFile(this.currentFolderUuid, payload);
     }
   }
 
   ngOnInit(): void {
-    
-    
 
     this.currentFolderUuid = this.contentService.currentFolderId;
     this.currentFolderName = this.contentService.currentFolderName;
@@ -73,7 +73,6 @@ export class ContentComponent implements OnInit {
           file.image = "/assets/images/folder.png";
         }
       })
-
     })
 
     this.contentService.onInitialize.subscribe((data) => {
@@ -81,6 +80,35 @@ export class ContentComponent implements OnInit {
       if(this.contentService.userRootFolderId !== ''){
         this.contentService.navigateToFolder(this.contentService.userRootFolderId);
         this.contentService.onInitialize.unsubscribe();
+      }
+    })
+
+    this.contentService.onFileUploading.subscribe((data) => {
+
+
+      if(!this.uploadWindowClosedByUser)
+      {
+        this.uploadWindowsIsShown = true;
+      }
+
+      var obj = this.uploadFiles.find(f => f.file == data.file);
+
+      if(obj === undefined){
+
+        this.uploadFiles.push(data);
+        this.uploadWindowClosedByUser = false;
+        this.uploadWindowsIsShown = true
+      }
+      else
+      {
+        this.uploadFiles.forEach(item =>{
+
+          if(item.file == data.file)
+          {
+            item.progress = data.progress;
+            item.status = data.status;
+          }
+        })
       }
     })
   }
@@ -158,5 +186,10 @@ export class ContentComponent implements OnInit {
 
   downloadFile(){
     this.contentService.downloadFile(this.rightClickedRow.id);
+  }
+
+  closeUploadWindow(){
+    this.uploadWindowClosedByUser = true;
+    this.uploadWindowsIsShown = false;
   }
 }

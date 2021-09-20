@@ -27,7 +27,7 @@
 
 </mat-menu>
 
-<input type="file" id="fileUploader" style="display: none;" (change) = "fileUploaded($event)">
+<input multiple type="file" id="fileUploader" style="display: none;" (change) = "fileUploaded($event)">
 
 <mat-tree 
     [dataSource]="dataSource" 

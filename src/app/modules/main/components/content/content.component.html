@@ -40,14 +40,16 @@
 
     </div>
 
-    <div class="uploadFileDialog" role="dialog">
+    <div class="uploadFileDialog" role="dialog" *ngIf = "uploadWindowsIsShown">
         <div class="header">
             <div class="text">
                 <p>File Upload</p>
             </div>
             <span class="spacer"></span>
             <div class="actions">
-                <button mat-icon-button>
+                <button 
+                    mat-icon-button
+                    (click) = "closeUploadWindow()">
                     <mat-icon>
                         close
                     </mat-icon>
@@ -56,26 +58,28 @@
         </div>
         <div class="content">
 
-            <div class="item">
+            <div class="item" *ngFor = "let file of uploadFiles">
                 <div class="icon">
                     <img src="/assets/images/folder.png">
                 </div>
 
                 <div class="fileName">
-                    <p>file1</p>
+                    <p>{{file.file.name}}</p>
                 </div>
 
                 <span class="spacer"></span>
 
-                <div class="progress">
-                    <mat-progress-spinner
+                <mat-progress-spinner 
+                    *ngIf = "file.status == 0"
                     class="example-margin"
                     color="primary"
                     mode="determinate"
-                    [value]="100"
+                    [value]="file.progress"
                     [diameter] = "30">
                 </mat-progress-spinner>
-                </div>
+
+                <img *ngIf ="file.status == 1"  src = "assets/images/fileUploaded.png">
+
             </div>
         </div>
     </div>

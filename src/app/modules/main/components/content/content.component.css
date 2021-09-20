@@ -115,7 +115,7 @@ table{
     position: absolute;
     right: 24px;
     z-index: 1001;
-    display: none;
+    background-color: white;
 }
 
 .uploadFileDialog .header{
@@ -144,6 +144,8 @@ table{
 .uploadFileDialog .content{
     display: flex;
     flex-direction: column;
+    max-height: 204px;
+    overflow: auto;
 }
 
 .uploadFileDialog .content .item{
@@ -165,4 +167,20 @@ table{
 
 .uploadFileDialog .content .item .spacer{
     flex: 1 1 auto;
+}
+
+.uploadFileDialog .content .item img{
+    align-self: center;
+    justify-self: center;
+    padding-bottom: 6px;
+    padding-right: 10px;
+    width: 24px;
+    height: 24px;
+}
+
+.uploadFileDialog .content .item .mat-progress-spinner{
+    align-self: center;
+    justify-self: center;
+    padding-bottom: 6px;
+    padding-right: 10px;
 }
