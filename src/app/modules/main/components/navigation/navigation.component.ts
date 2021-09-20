@@ -6,7 +6,7 @@ import { ContentService } from '../../services/content.service';
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.css']
 })
-export class NavigationComponent implements OnInit, OnDestroy {
+export class NavigationComponent implements OnInit{
 
   path: string = "";
   hasParent: boolean = false;
@@ -26,10 +26,6 @@ export class NavigationComponent implements OnInit, OnDestroy {
       this.hasParent = this.contentService.currentFolderHasParent;
       this.parentId = this.contentService.currentFolderParentId;
     });
-  }
-
-  ngOnDestroy(): void {
-    this.contentService.navigatedToDirectory.unsubscribe();
   }
 
   navigateToParent(){

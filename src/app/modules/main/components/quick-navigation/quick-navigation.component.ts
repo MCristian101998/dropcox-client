@@ -14,7 +14,7 @@ import { QuickNavigationService } from '../../services/quick-navigation.service'
   templateUrl: './quick-navigation.component.html',
   styleUrls: ['./quick-navigation.component.css']
 })
-export class QuickNavigationComponent implements OnInit, OnDestroy {
+export class QuickNavigationComponent implements OnInit {
 
   treeControl = new NestedTreeControl<DirectoriesDto>(node => node.subfolders);
   dataSource = new MatTreeNestedDataSource<DirectoriesDto>();
@@ -52,6 +52,10 @@ export class QuickNavigationComponent implements OnInit, OnDestroy {
         {
           folder.fileName = "My drive";
           rootFolderId = folder.id;
+
+          this.contentService.userRootFolderId = rootFolderId;
+          this.contentService.onInitialize.emit();
+
         }
 
         if(folder.fileName.toLowerCase() === 'shared'){
@@ -62,10 +66,6 @@ export class QuickNavigationComponent implements OnInit, OnDestroy {
 
       this.dataSource.data = this.contentService.directories;
     });
-  }
-
-  ngOnDestroy(): void {
-    this.contentService.directoriesLoaded.unsubscribe();
   }
 
   nodeClicked(node: DirectoriesDto){

@@ -35,13 +35,50 @@
                 mat-row 
                 *matRowDef="let row; columns: displayedColumns;"
                 (contextmenu) = "rowRightClick($event, row)"
-                (click) = "rowClick(row.id)"
-                (dblclick) = "rowDoubleClick(row)"
-                [ngClass] = "{'selected': selectedTableEntityId == row.id}"></tr>
+                (dblclick) = "rowDoubleClick(row)"></tr>
           </table>
 
     </div>
-    
+
+    <div class="uploadFileDialog" role="dialog">
+        <div class="header">
+            <div class="text">
+                <p>File Upload</p>
+            </div>
+            <span class="spacer"></span>
+            <div class="actions">
+                <button mat-icon-button>
+                    <mat-icon>
+                        close
+                    </mat-icon>
+                </button>        
+            </div>
+        </div>
+        <div class="content">
+
+            <div class="item">
+                <div class="icon">
+                    <img src="/assets/images/folder.png">
+                </div>
+
+                <div class="fileName">
+                    <p>file1</p>
+                </div>
+
+                <span class="spacer"></span>
+
+                <div class="progress">
+                    <mat-progress-spinner
+                    class="example-margin"
+                    color="primary"
+                    mode="determinate"
+                    [value]="100"
+                    [diameter] = "30">
+                </mat-progress-spinner>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="uploadingFile" *ngIf = "isInDrag">
@@ -105,3 +142,4 @@
     [style.top]="rowRightClickMenuPosition.y" 
     [matMenuTriggerFor]="details">
 </div>
+

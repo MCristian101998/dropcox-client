@@ -91,15 +91,78 @@ table{
     100% { transform: translateY(-20px); }
 }
 
-.selected{
+.mat-row:hover{
     background: #E8F0FE;
     box-shadow: inset 1px 1px 0 rgb(0 0 0 / 10%), inset 0 -1px 0 rgb(0 0 0 / 7%);
-}
+} 
 
-.selected .mat-cell{
+.mat-cell:hover{
     color: #3F51B5;
 }
 
 .nameColumn{
     width: 8000px;
+}
+
+.uploadFileDialog{
+    box-shadow: 0 2px 8px 0 rgb(0 0 0 / 20%);
+    border-radius: 2px;
+    bottom: 24px;
+    display: block;
+    left: auto;
+    max-height: 323px;
+    overflow: visible;
+    position: absolute;
+    right: 24px;
+    z-index: 1001;
+    display: none;
+}
+
+.uploadFileDialog .header{
+    display: flex;
+    flex-direction: row;
+    width: 350px;
+    background-color: #3F51B5;
+    color: white;
+}
+
+.uploadFileDialog .header .text{
+    padding-left: 10px;
+    align-self: center;
+    justify-self: center;
+}
+
+.uploadFileDialog .header .spacer{
+    flex: 1 1 auto;
+}
+
+.uploadFileDialog .header .actions{
+    align-self: center;
+    justify-self: flex-end;
+}
+
+.uploadFileDialog .content{
+    display: flex;
+    flex-direction: column;
+}
+
+.uploadFileDialog .content .item{
+    display: flex;
+    flex-direction: row;
+}
+
+.uploadFileDialog .content .item .icon{
+    padding-left: 10px;
+    padding-right: 20px;
+    justify-self: center;
+    align-self: center;
+}
+
+.uploadFileDialog .content .item .fileName{
+    align-self: center;
+    justify-self: center;
+}
+
+.uploadFileDialog .content .item .spacer{
+    flex: 1 1 auto;
 }

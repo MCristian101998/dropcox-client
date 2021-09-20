@@ -11,13 +11,12 @@ import { DialogService } from '../../services/dialog.service';
   templateUrl: './content.component.html',
   styleUrls: ['./content.component.css']
 })
-export class ContentComponent implements OnInit, OnDestroy {
+export class ContentComponent implements OnInit {
 
   fileTypes: FileTypeDto[] = [];
   files: FilesDto[] = [];
   currentFolderUuid:string = "";
   currentFolderName: string = "";
-  selectedTableEntityId: string = "";
 
   displayedColumns: string[] = ['fileName', 'owner', 'lastModified'];
 
@@ -58,6 +57,8 @@ export class ContentComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     
+    
+
     this.currentFolderUuid = this.contentService.currentFolderId;
     this.currentFolderName = this.contentService.currentFolderName;
 
@@ -74,14 +75,14 @@ export class ContentComponent implements OnInit, OnDestroy {
       })
 
     })
-  }
 
-  ngOnDestroy(): void {
-    this.contentService.navigatedToDirectory.unsubscribe();
-  }
+    this.contentService.onInitialize.subscribe((data) => {
 
-  rowClick(rowId: string){
-    this.selectedTableEntityId = rowId;
+      if(this.contentService.userRootFolderId !== ''){
+        this.contentService.navigateToFolder(this.contentService.userRootFolderId);
+        this.contentService.onInitialize.unsubscribe();
+      }
+    })
   }
 
   rowDoubleClick(file: FilesDto){
@@ -106,15 +107,12 @@ export class ContentComponent implements OnInit, OnDestroy {
 
     event.preventDefault();
 
-    this.rowClick(row.id);
-
     this.rowRightClickMenuPosition.x = event.clientX + 'px'; 
     this.rowRightClickMenuPosition.y = event.clientY + 'px'; 
 
     this.rightClickedRow = row;
 
     this.rowRightClickTrigger.toggleMenu();
-
   }
 
   onDragEnter(event:any){

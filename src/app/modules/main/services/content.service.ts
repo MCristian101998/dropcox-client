@@ -25,6 +25,7 @@ export class ContentService{
 
     directoriesLoaded = new EventEmitter<DirectoriesDto[]>();
     navigatedToDirectory= new EventEmitter<DirectoriesDto>();
+    onInitialize = new EventEmitter<any>();
 
     constructor(
         private http: HttpClient,
@@ -42,6 +43,9 @@ export class ContentService{
     }
 
     populateDirectories(){
+
+        console.log("populateDirectories : userId : " + this.currentUser.id);
+
         this.http.get<any>(environment.apiBaseUrl + "folders/" + this.currentUser.id)
         .subscribe({
 
@@ -176,10 +180,14 @@ export class ContentService{
     }
 
     downloadFile(id: string){
-        this.http.get<any>(environment.apiBaseUrl + "folders/" + id + "/download")
+        this.http.get(environment.apiBaseUrl + "folders/" + id + "/download",
+        {
+            responseType: 'blob',
+        })
             .subscribe({
                 next: (resp) =>{
-                    console.log(resp);
+                    var url= window.URL.createObjectURL(resp);
+                    window.open(url);
                 },
                 error: (err) => {
                     console.error(err);
