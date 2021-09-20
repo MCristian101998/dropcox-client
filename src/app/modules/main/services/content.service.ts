@@ -174,4 +174,17 @@ export class ContentService{
                 }, 1500);
             }});
     }
+
+    downloadFile(id: string){
+        this.http.get<any>(environment.apiBaseUrl + "folders/" + id + "/download")
+            .subscribe({
+                next: (resp) =>{
+                    console.log(resp);
+                },
+                error: (err) => {
+                    console.error(err);
+                    this.snackBarService.openSnackBar('Something went wrong ! Please reload.');
+                }
+            })
+    }
 }

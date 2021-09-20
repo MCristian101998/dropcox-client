@@ -155,11 +155,10 @@ export class ContentComponent implements OnInit, OnDestroy {
   }
 
   deleteFile(){
-
     this.dialogService.openDeleteFileDialog(this.rightClickedRow.id, this.rightClickedRow.fileName);
   }
 
   downloadFile(){
-
+    this.contentService.downloadFile(this.rightClickedRow.id);
   }
 }
