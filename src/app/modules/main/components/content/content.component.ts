@@ -75,14 +75,6 @@ export class ContentComponent implements OnInit {
       })
     })
 
-    this.contentService.onInitialize.subscribe((data) => {
-
-      if(this.contentService.userRootFolderId !== ''){
-        this.contentService.navigateToFolder(this.contentService.userRootFolderId);
-        this.contentService.onInitialize.unsubscribe();
-      }
-    })
-
     this.contentService.onFileUploading.subscribe((data) => {
 
 

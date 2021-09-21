@@ -113,6 +113,7 @@ table{
     max-height: 323px;
     overflow: visible;
     position: absolute;
+    overflow: auto;
     right: 24px;
     z-index: 1001;
     background-color: white;
@@ -145,7 +146,6 @@ table{
     display: flex;
     flex-direction: column;
     max-height: 204px;
-    overflow: auto;
 }
 
 .uploadFileDialog .content .item{
@@ -165,10 +165,6 @@ table{
     justify-self: center;
 }
 
-.uploadFileDialog .content .item .spacer{
-    flex: 1 1 auto;
-}
-
 .uploadFileDialog .content .item img{
     align-self: center;
     justify-self: center;
@@ -176,6 +172,9 @@ table{
     padding-right: 10px;
     width: 24px;
     height: 24px;
+    padding-left: 30px;
+    margin: auto;
+
 }
 
 .uploadFileDialog .content .item .mat-progress-spinner{
@@ -183,4 +182,43 @@ table{
     justify-self: center;
     padding-bottom: 6px;
     padding-right: 10px;
+    margin: auto;
+}
+
+@media(max-width: 383px){
+
+    .uploadFileDialog{
+
+        width: 250px;
+    }
+
+    .uploadFileDialog .header{
+        width: 250px;
+    }
+
+    .uploadFileDialog .content .item .mat-progress-spinner{
+        padding-right: 40px;
+    }
+
+    .uploadFileDialog .content .item img{
+        padding-right: 40px;
+    }
+
+}
+
+@media(min-width: 384px){
+
+    .uploadFileDialog .content .item .mat-progress-spinner{
+        padding-left: 10px;
+    }
+
+    .uploadFileDialog .content .item img{
+        padding-right: 10px;
+    }
+
+    .uploadFileDialog .content .item .fileName{
+        max-width: 205px;
+        overflow: auto;
+    }
+
 }

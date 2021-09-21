@@ -27,7 +27,6 @@ export class ContentService{
 
     directoriesLoaded = new EventEmitter<DirectoriesDto[]>();
     navigatedToDirectory= new EventEmitter<DirectoriesDto>();
-    onInitialize = new EventEmitter<any>();
     onFileUploading = new EventEmitter<UploadProgressDto>();
 
     constructor(
@@ -54,6 +53,8 @@ export class ContentService{
                 
                 this.directories = resp.directories;
                 this.directoriesLoaded.emit(resp.directories);
+
+                console.log(JSON.stringify(resp));
             },
             error: (err) => {
 
@@ -106,13 +107,17 @@ export class ContentService{
             .subscribe({
                 next: (resp) => {
 
-                    this.populateDirectories();
-                    this.navigateToFolder(folderToCreate.folderId);
+                    // this.populateDirectories();
+                    // this.navigateToFolder(folderToCreate.folderId);
                 },
                 error: (err) => {
                     console.error(err);
                     this.snackBarService.openSnackBar('Something went wrong ! Please reload.')
                 }
+            }).add(() => {
+
+                this.populateDirectories();
+                this.navigateToFolder(folderToCreate.folderId);
             });
     }
 
@@ -189,6 +194,8 @@ export class ContentService{
         })
             .subscribe({
                 next: (resp) =>{
+
+
                     var url= window.URL.createObjectURL(resp);
                     window.open(url);
                 },

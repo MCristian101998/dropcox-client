@@ -54,8 +54,6 @@ export class QuickNavigationComponent implements OnInit {
           rootFolderId = folder.id;
 
           this.contentService.userRootFolderId = rootFolderId;
-          this.contentService.onInitialize.emit();
-
         }
 
         if(folder.fileName.toLowerCase() === 'shared'){
@@ -64,7 +62,10 @@ export class QuickNavigationComponent implements OnInit {
 
       })
 
-      this.dataSource.data = this.contentService.directories;
+      console.log("===================");
+      console.log("directoriesLoaded " + JSON.stringify(this.contentService.directories));
+
+      this.dataSource.data = folders;
     });
   }
 
