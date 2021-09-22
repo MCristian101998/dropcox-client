@@ -84,6 +84,12 @@ export class QuickNavigationComponent implements OnInit {
 
   fileUploaded(evt: Event){
 
+    if(this.contentService.uploadInProgress)
+    {
+      this.snackBarService.openSnackBar("Upload in progress. Please wait.");
+      return;
+    }
+
     const element = evt.currentTarget as HTMLInputElement;
 
     if(element.files && element.files[0])

@@ -26,6 +26,7 @@ export class ContentService{
     public currentFolderParentId:string = '';
     public currentFolderName:string = '';
     public userRootFolderId: string = '';
+    public uploadInProgress: boolean = false;
 
     directoriesLoaded = new EventEmitter<DirectoriesDto[]>();
     navigatedToDirectory= new EventEmitter<DirectoriesDto>();
@@ -158,6 +159,8 @@ export class ContentService{
 
         var progress = 0;
 
+        this.uploadInProgress = true;
+
         return this.http.post<any>(environment.apiBaseUrl + "folders/file-upload/" + fileId, formData,{
             reportProgress: true,
             observe: 'events'
@@ -176,10 +179,7 @@ export class ContentService{
 
                     files.forEach(item =>{
                         this.onFileUploading.emit({file: item, progress: progress, status: UploadDownloadStatusDto.InProgress});
-
                     })
-
-
                 }
                 break;
               case HttpEventType.Response:
@@ -187,6 +187,8 @@ export class ContentService{
                 files.forEach(item =>{
                     this.onFileUploading.emit({file: item, progress: progress, status: UploadDownloadStatusDto.Done});
                 });
+
+                this.uploadInProgress = false;
 
                 this.populateDirectories();
                 this.navigateToFolder(this.currentFolderId);

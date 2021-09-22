@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, QueryList, ViewChild } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
+import { SnackBarService } from 'src/app/shared/services/snackBarService';
 import { FolderDialogData } from '../../models/AddFolderDialogData';
 import { DownloadProgressDto } from '../../models/DownloadProgressDto';
 import { FilesDto } from '../../models/FilesDto';
@@ -43,11 +44,19 @@ export class ContentComponent implements OnInit {
 
   constructor(
     private contentService: ContentService,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private snackBarService: SnackBarService
   ) { }
  
 
   uploadFile(evt: FileList){
+
+    if(this.contentService.uploadInProgress)
+    {
+      this.snackBarService.openSnackBar("Upload in progress. Please wait.");
+      return;
+    }
+
 
     if(evt && evt[0])
     {
