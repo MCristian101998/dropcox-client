@@ -61,10 +61,6 @@ export class QuickNavigationComponent implements OnInit {
         }
 
       })
-
-      console.log("===================");
-      console.log("directoriesLoaded " + JSON.stringify(this.contentService.directories));
-
       this.dataSource.data = folders;
     });
   }
@@ -95,12 +91,12 @@ export class QuickNavigationComponent implements OnInit {
 
       const filesArray = Array.from(element.files);
 
+      var payload = new FormData();
       filesArray.forEach(file => {
 
-        var payload = new FormData();
         payload.append('files', file);
-        this.contentService.uploadFile(this.contentService.currentFolderId,file, payload);
       })
+      this.contentService.uploadFile(this.contentService.currentFolderId,filesArray, payload);
     }
   }
 }

@@ -1,7 +1,6 @@
 import { UploadDownloadStatusDto } from "./UploadDownloadStatusDto";
 
-export class UploadProgressDto{
-    file!: File;
-    progress!: number;
+export class DownloadProgressDto{
+    fileName!: string;
     status!: UploadDownloadStatusDto;
 }

@@ -9,7 +9,9 @@ import { DirectoriesDto } from "../models/DirectoriesDto";
 import { FilesDto } from "../models/FilesDto";
 import { RenameFileDto } from "../models/RenameFileDto";
 import { UploadProgressDto } from "../models/UploadProgressDto";
-import { UploadStatusDto } from "../models/UploadStatusDto";
+import { UploadDownloadStatusDto } from "../models/UploadDownloadStatusDto";
+import * as fileSaver from 'file-saver';
+import { DownloadProgressDto } from "../models/DownloadProgressDto";
 
 @Injectable()
 export class ContentService{
@@ -28,6 +30,7 @@ export class ContentService{
     directoriesLoaded = new EventEmitter<DirectoriesDto[]>();
     navigatedToDirectory= new EventEmitter<DirectoriesDto>();
     onFileUploading = new EventEmitter<UploadProgressDto>();
+    onFileDownloading = new EventEmitter<DownloadProgressDto>();
 
     constructor(
         private http: HttpClient,
@@ -54,7 +57,6 @@ export class ContentService{
                 this.directories = resp.directories;
                 this.directoriesLoaded.emit(resp.directories);
 
-                console.log(JSON.stringify(resp));
             },
             error: (err) => {
 
@@ -152,7 +154,7 @@ export class ContentService{
             })
     }
 
-    uploadFile(fileId: string, file:File, formData: FormData){
+    uploadFile(fileId: string, files:File[], formData: FormData){
 
         var progress = 0;
 
@@ -171,12 +173,20 @@ export class ContentService{
               case HttpEventType.UploadProgress:
                 if(event.total !== undefined){
                     progress = Math.round(event.loaded / event.total * 100);
-                    this.onFileUploading.emit({file: file, progress: progress, status: UploadStatusDto.InProgress});
+
+                    files.forEach(item =>{
+                        this.onFileUploading.emit({file: item, progress: progress, status: UploadDownloadStatusDto.InProgress});
+
+                    })
+
+
                 }
                 break;
               case HttpEventType.Response:
 
-                this.onFileUploading.emit({file: file, progress: progress, status: UploadStatusDto.Done});
+                files.forEach(item =>{
+                    this.onFileUploading.emit({file: item, progress: progress, status: UploadDownloadStatusDto.Done});
+                });
 
                 this.populateDirectories();
                 this.navigateToFolder(this.currentFolderId);
@@ -187,17 +197,40 @@ export class ContentService{
             }});
     }
 
-    downloadFile(id: string){
-        this.http.get(environment.apiBaseUrl + "folders/" + id + "/download",
+    downloadFile(file: FilesDto){
+
+        var fileDownloadProgress = new DownloadProgressDto();
+        fileDownloadProgress.fileName = file.fileName;
+        fileDownloadProgress.status = UploadDownloadStatusDto.InProgress;
+
+        this.onFileDownloading.emit(fileDownloadProgress);
+
+        var headers = new HttpHeaders();
+        headers.append("Accept-Ranges", "bytes");
+
+        this.http.get(environment.apiBaseUrl + "folders/" + file.id + "/download",
         {
+            headers: headers,
+            observe: 'response',
             responseType: 'blob',
-        })
+        }
+        )
             .subscribe({
                 next: (resp) =>{
 
+                    fileDownloadProgress.status = UploadDownloadStatusDto.Done;
+                    this.onFileDownloading.emit(fileDownloadProgress);
 
-                    var url= window.URL.createObjectURL(resp);
-                    window.open(url);
+                    var contentDisposition = resp.headers.get('Content-Disposition');
+                    if(contentDisposition == null){
+                        return;
+                    }
+                    if(resp.body == null){
+                        return;
+                    }
+                    var filename = contentDisposition.split(';')[1].split('filename')[1].split('=')[1].trim();
+
+                    fileSaver.saveAs(resp.body, filename,);
                 },
                 error: (err) => {
                     console.error(err);

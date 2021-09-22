@@ -40,7 +40,7 @@
 
     </div>
 
-    <div class="uploadFileDialog" role="dialog" *ngIf = "uploadWindowsIsShown">
+    <div class="fileDialog" role="dialog" *ngIf = "uploadWindowsIsShown">
         <div class="header">
             <div class="text">
                 <p>File Upload</p>
@@ -76,6 +76,47 @@
                     mode="determinate"
                     [value]="file.progress"
                     [diameter] = "30">
+                </mat-progress-spinner>
+
+                <img *ngIf ="file.status == 1"  src = "assets/images/fileUploaded.png">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="fileDialog" role="dialog" *ngIf = "downloadWindowIsShown">
+        <div class="header">
+            <div class="text">
+                <p>File Download</p>
+            </div>
+            <span class="spacer"></span>
+            <div class="actions">
+                <button 
+                    mat-icon-button
+                    (click) = "closeDownloadWindow()">
+                    <mat-icon>
+                        close
+                    </mat-icon>
+                </button>        
+            </div>
+        </div>
+        <div class="content">
+
+            <div class="item" *ngFor = "let file of downloadFiles">
+                <div class="icon">
+                    <img src="/assets/images/folder.png">
+                </div>
+
+                <div class="fileName">
+                    <p>{{file.fileName}}</p>
+                </div>
+
+                <span class="spacer"></span>
+
+                <mat-progress-spinner
+                    mode = "indeterminate"
+                    [diameter] = "30"
+                    *ngIf = "file.status == 0">
                 </mat-progress-spinner>
 
                 <img *ngIf ="file.status == 1"  src = "assets/images/fileUploaded.png">

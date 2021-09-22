@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, QueryList, ViewChild } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { FolderDialogData } from '../../models/AddFolderDialogData';
+import { DownloadProgressDto } from '../../models/DownloadProgressDto';
 import { FilesDto } from '../../models/FilesDto';
 import { FileTypeDto } from '../../models/FileTypeDto';
 import { UploadProgressDto } from '../../models/UploadProgressDto';
@@ -18,9 +19,14 @@ export class ContentComponent implements OnInit {
   files: FilesDto[] = [];
   currentFolderUuid:string = "";
   currentFolderName: string = "";
+
   uploadWindowClosedByUser: boolean = false;
   uploadWindowsIsShown: boolean = false;
   uploadFiles: UploadProgressDto[] = [];
+
+  downloadWindowClosedByUser: boolean = false;
+  downloadWindowIsShown: boolean = false;
+  downloadFiles: DownloadProgressDto[] = [];
 
   displayedColumns: string[] = ['fileName', 'owner', 'lastModified'];
 
@@ -48,12 +54,15 @@ export class ContentComponent implements OnInit {
 
       const filesArray = Array.from(evt);
 
+      var payload = new FormData();
+
+
       filesArray.forEach(file => {
 
-        var payload = new FormData();
         payload.append('files', file);
-        this.contentService.uploadFile(this.currentFolderUuid,file , payload);
       })
+
+      this.contentService.uploadFile(this.currentFolderUuid,filesArray , payload);
     }
   }
 
@@ -78,7 +87,7 @@ export class ContentComponent implements OnInit {
     this.contentService.onFileUploading.subscribe((data) => {
 
 
-      if(!this.uploadWindowClosedByUser)
+      if(!this.uploadWindowClosedByUser && !this.downloadWindowIsShown)
       {
         this.uploadWindowsIsShown = true;
       }
@@ -98,6 +107,33 @@ export class ContentComponent implements OnInit {
           if(item.file == data.file)
           {
             item.progress = data.progress;
+            item.status = data.status;
+          }
+        })
+      }
+    })
+
+    this.contentService.onFileDownloading.subscribe((data) => {
+
+      if(!this.downloadWindowClosedByUser && !this.uploadWindowsIsShown)
+      {
+        this.downloadWindowIsShown = true;
+      }
+
+      var obj = this.downloadFiles.find(f => f.fileName == data.fileName);
+
+      if(obj === undefined){
+
+        this.downloadFiles.push(data);
+        this.downloadWindowClosedByUser = false;
+        this.downloadWindowIsShown = true
+      }
+      else
+      {
+        this.downloadFiles.forEach(item =>{
+
+          if(item.fileName == data.fileName)
+          {
             item.status = data.status;
           }
         })
@@ -177,11 +213,16 @@ export class ContentComponent implements OnInit {
   }
 
   downloadFile(){
-    this.contentService.downloadFile(this.rightClickedRow.id);
+    this.contentService.downloadFile(this.rightClickedRow);
   }
 
   closeUploadWindow(){
     this.uploadWindowClosedByUser = true;
     this.uploadWindowsIsShown = false;
+  }
+
+  closeDownloadWindow(){
+    this.downloadWindowClosedByUser = true;
+    this.downloadWindowIsShown = false;
   }
 }

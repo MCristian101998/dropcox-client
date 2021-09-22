@@ -67,9 +67,6 @@ export class RenameFileComponent implements OnInit {
             this.folderName.setErrors({'nameExists' : null})
             this.folderName.updateValueAndValidity();
           }
-
-
-          console.log("resp " + resp);
         },
         error: (err) =>{
           console.error(err);
