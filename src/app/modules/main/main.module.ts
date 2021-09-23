@@ -51,7 +51,8 @@ import { CheckFolderNameService } from './services/check-foldername.service';
     QuickNavigationService,
     SnackBarService,
     ContentService,
-    CheckFolderNameService
+    CheckFolderNameService,
+    UserService
   ]
 })
 export class MainModule { }

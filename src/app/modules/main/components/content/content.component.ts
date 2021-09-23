@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, QueryList, ViewChild } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { SnackBarService } from 'src/app/shared/services/snackBarService';
+import { UserService } from 'src/app/shared/services/user.service';
 import { FolderDialogData } from '../../models/AddFolderDialogData';
 import { DownloadProgressDto } from '../../models/DownloadProgressDto';
 import { FilesDto } from '../../models/FilesDto';
@@ -45,7 +46,8 @@ export class ContentComponent implements OnInit {
   constructor(
     private contentService: ContentService,
     private dialogService: DialogService,
-    private snackBarService: SnackBarService
+    private snackBarService: SnackBarService,
+    private userService: UserService,
   ) { }
  
 
@@ -79,6 +81,13 @@ export class ContentComponent implements OnInit {
 
     this.currentFolderUuid = this.contentService.currentFolderId;
     this.currentFolderName = this.contentService.currentFolderName;
+
+    var currentUser = this.userService.getCurrentUser();
+
+    if(currentUser != null)
+    {
+      this.contentService.navigateToFolder(currentUser.privateFolderId);
+    }
 
     this.contentService.navigatedToDirectory.subscribe((data) => {
 

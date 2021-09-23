@@ -55,7 +55,7 @@ export class RenameFileComponent implements OnInit {
     if(this.folderName.value === this.fileName) { return; }
     if(folderName === "") { return }
 
-    this.checkFolderNameService.checkName(folderName)
+    this.checkFolderNameService.checkName(this.contentService.currentFolderId,folderName)
       .subscribe({
         next : (resp) => {
 

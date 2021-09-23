@@ -4,4 +4,5 @@ export class AppUserDto{
     lastName!:string;
     email!:string;
     username!:string;
+    privateFolderId!: string;
 }

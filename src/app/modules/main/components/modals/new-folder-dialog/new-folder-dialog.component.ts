@@ -48,7 +48,7 @@ export class NewFolderDialogComponent{
 
     if(folderName === "") { return }
 
-    this.checkFolderNameService.checkName(folderName)
+    this.checkFolderNameService.checkName(this.contentService.currentFolderId,folderName)
       .subscribe({
         next : (resp) => {
 

@@ -7,7 +7,7 @@ export class CheckFolderNameService{
 
     constructor(private http: HttpClient){}
 
-    checkName(folderName: string){
+    checkName(folderId:string, folderName: string){
 
         return this.http.get(environment.apiBaseUrl + "folders/exists/" + folderName);
     }
