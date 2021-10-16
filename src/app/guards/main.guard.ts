@@ -17,21 +17,21 @@ export class MainGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-    // const token = localStorage.getItem('access_token');
-    // const user = localStorage.getItem('current_user');
+    const token = localStorage.getItem('access_token');
+    const user = localStorage.getItem('current_user');
 
-    // if(!token || !user){
-    //   this.router.navigate(["/auth/login"]);
-    //   return false;
-    // }
+    if(!token || !user){
+      this.router.navigate(["/auth/login"]);
+      return false;
+    }
 
-    // if(this.jwtHelper.isTokenExpired(token))
-    // {
-    //   localStorage.removeItem("access_token");
-    //   localStorage.removeItem("current_user");
-    //   this.router.navigate(["/auth/login"]);
-    //   return false;
-    // }
+    if(this.jwtHelper.isTokenExpired(token))
+    {
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("current_user");
+      this.router.navigate(["/auth/login"]);
+      return false;
+    }
 
     return true;
   }

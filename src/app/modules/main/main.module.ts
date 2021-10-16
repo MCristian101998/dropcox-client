@@ -22,6 +22,10 @@ import { ContentService } from './services/content.service';
 import { RenameFileComponent } from './components/modals/rename-file/rename-file.component';
 import { DeleteFileComponent } from './components/modals/delete-file/delete-file.component';
 import { CheckFolderNameService } from './services/check-foldername.service';
+import { NewSharedDriveDialogComponent } from './components/modals/new-shared-drive-dialog/new-shared-drive-dialog.component';
+import { ManageAccessInSharedDriveComponent } from './components/modals/manage-access-in-shared-drive/manage-access-in-shared-drive.component';
+import { SharedFolderService } from './services/shared-folder.service';
+import { DeleteUserDilaogComponent } from './components/modals/delete-user-dilaog/delete-user-dilaog.component';
 
 
 @NgModule({
@@ -36,6 +40,9 @@ import { CheckFolderNameService } from './services/check-foldername.service';
     NewFolderDialogComponent,
     RenameFileComponent,
     DeleteFileComponent,
+    NewSharedDriveDialogComponent,
+    ManageAccessInSharedDriveComponent,
+    DeleteUserDilaogComponent,
   ],
   imports: [
     CommonModule,
@@ -52,7 +59,8 @@ import { CheckFolderNameService } from './services/check-foldername.service';
     SnackBarService,
     ContentService,
     CheckFolderNameService,
-    UserService
+    UserService,
+    SharedFolderService
   ]
 })
 export class MainModule { }

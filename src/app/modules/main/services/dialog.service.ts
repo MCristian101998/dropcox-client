@@ -1,7 +1,9 @@
 import { EventEmitter, Injectable } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { DeleteFileComponent } from "../components/modals/delete-file/delete-file.component";
+import { ManageAccessInSharedDriveComponent } from "../components/modals/manage-access-in-shared-drive/manage-access-in-shared-drive.component";
 import { NewFolderDialogComponent } from "../components/modals/new-folder-dialog/new-folder-dialog.component";
+import { NewSharedDriveDialogComponent } from "../components/modals/new-shared-drive-dialog/new-shared-drive-dialog.component";
 import { RenameFileComponent } from "../components/modals/rename-file/rename-file.component";
 import { FolderDialogData } from "../models/AddFolderDialogData";
 
@@ -11,6 +13,10 @@ export class DialogService{
     constructor(
         public dialog: MatDialog,
     ){}
+
+    openNewSharedDriveDialog(){
+        const dialogRef = this.dialog.open(NewSharedDriveDialogComponent);
+    }
 
     openNewFolderDialog(newFolderData: FolderDialogData){
 
@@ -40,4 +46,9 @@ export class DialogService{
         })
     }
 
+    openManageSharedFolderAccess(){
+        const dialogRef = this.dialog.open(ManageAccessInSharedDriveComponent,{
+            width: '450px'
+        })
+    }
 }

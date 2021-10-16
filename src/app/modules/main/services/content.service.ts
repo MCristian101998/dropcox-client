@@ -12,6 +12,7 @@ import { UploadProgressDto } from "../models/UploadProgressDto";
 import { UploadDownloadStatusDto } from "../models/UploadDownloadStatusDto";
 import * as fileSaver from 'file-saver';
 import { DownloadProgressDto } from "../models/DownloadProgressDto";
+import { escapeRegExp } from "@angular/compiler/src/util";
 
 @Injectable()
 export class ContentService{
@@ -25,8 +26,12 @@ export class ContentService{
     public currentFolderHasParent: boolean = false;
     public currentFolderParentId:string = '';
     public currentFolderName:string = '';
+    public currentFolderIsShared: boolean = false;
+    public currentFolderIsOwnedByCurrentUser: boolean = false;
+
     public userRootFolderId: string = '';
     public uploadInProgress: boolean = false;
+    public downloadInProgress: boolean = false;
 
     directoriesLoaded = new EventEmitter<DirectoriesDto[]>();
     navigatedToDirectory= new EventEmitter<DirectoriesDto>();
@@ -38,6 +43,10 @@ export class ContentService{
         private userService: UserService,
         private snackBarService: SnackBarService
     ){
+    }
+
+    populateDirectories(){
+
         var currentUser = this.userService.getCurrentUser();
 
         if(currentUser === null){
@@ -46,9 +55,6 @@ export class ContentService{
         }
 
         this.currentUser = currentUser;
-    }
-
-    populateDirectories(){
 
         this.http.get<any>(environment.apiBaseUrl + "folders/" + this.currentUser.id)
         .subscribe({
@@ -80,6 +86,7 @@ export class ContentService{
                     this.currentFolderPath = resp.parentDirectory.path;
                     this.currentFolderParentId = resp.parentDirectory.parentId;
                     this.currentFolderName = resp.parentDirectory.fileName;
+                    this.currentFolderIsShared = resp.parentDirectory.isShared;
 
                     if(this.currentFolderParentId !== undefined){
                         this.currentFolderHasParent = true;
@@ -89,10 +96,17 @@ export class ContentService{
                         this.currentFolderHasParent = false;
                     }
 
+                    if(this.currentUser.username.toLowerCase() === resp.parentDirectory.uploadedByUser.toLowerCase())
+                    {
+                        this.currentFolderIsOwnedByCurrentUser = true;
+                    }
+                    else{
+                        this.currentFolderIsOwnedByCurrentUser = false;
+                    }
+
                     this.currentFolderContent = resp.files;
                     this.navigatedToDirectory.emit(resp);
                 },
-
                 error: (err) => {
 
                     console.error(err);
@@ -102,17 +116,9 @@ export class ContentService{
     }
 
     createFolder(folderToCreate: CreateFolderDto){
-
-        // alert("content service current folder id " + this.currentFolderId);
-        // alert("folder to create dto folder id " + this.currentFolderId);
-
         this.http.post(environment.apiBaseUrl + "folders", folderToCreate)
             .subscribe({
-                next: (resp) => {
-
-                    // this.populateDirectories();
-                    // this.navigateToFolder(folderToCreate.folderId);
-                },
+                next: (resp) => {},
                 error: (err) => {
                     console.error(err);
                     this.snackBarService.openSnackBar('Something went wrong ! Please reload.')
@@ -201,6 +207,8 @@ export class ContentService{
 
     downloadFile(file: FilesDto){
 
+        this.downloadInProgress = true;
+
         var fileDownloadProgress = new DownloadProgressDto();
         fileDownloadProgress.fileName = file.fileName;
         fileDownloadProgress.status = UploadDownloadStatusDto.InProgress;
@@ -233,10 +241,26 @@ export class ContentService{
                     var filename = contentDisposition.split(';')[1].split('filename')[1].split('=')[1].trim();
 
                     fileSaver.saveAs(resp.body, filename,);
+
+                    this.downloadInProgress = false;
                 },
                 error: (err) => {
                     console.error(err);
+                    this.downloadInProgress = false;
                     this.snackBarService.openSnackBar('Something went wrong ! Please reload.');
+                }
+            })
+    }
+
+    createSharedDrive(folderName: string){
+        this.http.post<any>(environment.apiBaseUrl + "folders/create-shared-folder/" + folderName, null)
+            .subscribe({
+                next: (resp) =>{
+                    this.populateDirectories();
+                },
+                error: (err) => {
+                    console.error(err);
+                    this.snackBarService.openSnackBar("Something went wrong ! Please reload.");
                 }
             })
     }

@@ -1,0 +1,55 @@
+<button mat-icon-button class="close-button" [mat-dialog-close]="true">
+    <mat-icon class="close-icon" color="primary">close</mat-icon>
+  </button>
+
+<h2 mat-dialog-title>Manage Users Access</h2>
+
+<div class="container" *ngIf = "!isInAddMode">
+    <div class="options">
+        <button mat-fab color="primary"
+            matTooltip = "Add new user"
+            (click) = "goToAddUser()">
+            <mat-icon>add</mat-icon>
+          </button>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div class="content">
+        <mat-list>
+            <mat-list-item *ngFor = "let user of usersWithAccess">
+                {{user.username}}
+                <span class="spacer"></span>
+                <button mat-icon-button
+                    (click) = "removeUserAccess(user)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+                <mat-divider></mat-divider>
+            </mat-list-item>
+         </mat-list>     
+    </div>
+</div>
+
+<div class="container" *ngIf = "isInAddMode">
+    <div class="options">
+        <button mat-fab color="primary"
+            matTooltip = "Users List"
+            (click) = "goToUsersList()">
+            <mat-icon>arrow_back</mat-icon>
+          </button>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <mat-form-field class="userToAddControl" appearance="fill">
+        <mat-label>User To Add</mat-label>
+        <mat-select multiple [formControl] = "usersToAddControl">
+            <mat-option (onSelectionChange)="change($event)" *ngFor = "let user of usersWithoutAccess" [value] = "user">{{user.username}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="usersToAddControl.invalid">{{getUsersToAddControlErrors()}}</mat-error>
+    </mat-form-field>
+
+    <div class="saveButtonContainer">
+        <button color="primary" style="width: 60px;" mat-raised-button (click) = "saveUsers()">Save</button>
+    </div>
+</div>

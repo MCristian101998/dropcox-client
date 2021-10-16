@@ -6,4 +6,26 @@
             arrow_back
     </mat-icon>
     <p>{{path}}</p>
+
+    <span class="spacer"></span>
+
+    <mat-icon
+        matTooltip = "Drive Options"
+        [matMenuTriggerFor] = "optionsMenu"
+        *ngIf="isShared && currentUserIsOwner">
+            more_vert
+    </mat-icon>
 </mat-toolbar>
+
+<mat-menu #optionsMenu="matMenu">
+    <button mat-menu-item>
+        <mat-icon>drive_file_rename_outline</mat-icon>
+        Rename Drive
+    </button>
+
+    <button mat-menu-item
+        (click) = "openManageFolderAccess()">
+        <mat-icon>people</mat-icon>
+        Manage Access
+    </button>
+</mat-menu>

@@ -11,6 +11,15 @@
 </div>
 
 <mat-menu #options="matMenu">
+
+  <button mat-menu-item
+          (click) = "openNewSharedDriveDialog()">
+    <mat-icon>add</mat-icon>
+    <span>Add Shared Drive</span>
+  </button>
+
+  <mat-divider></mat-divider>
+
   <button mat-menu-item
           (click) = "openNewFolderDialog()">
     <mat-icon>add</mat-icon>

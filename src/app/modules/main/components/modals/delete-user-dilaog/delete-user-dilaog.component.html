@@ -1,0 +1,10 @@
+<h2 mat-dialog-title>Remove User Access</h2>
+
+<mat-dialog-content>
+  <p>{{dialogTitle}}</p>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-raised-button color="primary" (click) = "delete()"  cdkFocusInitial>Yes</button>
+</mat-dialog-actions>

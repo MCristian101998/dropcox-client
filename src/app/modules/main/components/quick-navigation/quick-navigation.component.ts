@@ -77,6 +77,10 @@ export class QuickNavigationComponent implements OnInit {
     this.dialogService.openNewFolderDialog(dialogData);
   }
 
+  openNewSharedDriveDialog(){
+    this.dialogService.openNewSharedDriveDialog();
+  }
+
   uploadAFile(){
     var fileUpload = document.getElementById("fileUploader");
     fileUpload?.click();

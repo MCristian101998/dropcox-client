@@ -1,0 +1,39 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    height: 400px;
+}
+
+.close-button{
+    float: right;
+    top:-24px;
+    right:-24px;
+  }
+
+.container .options{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.container .content .mat-list{
+    max-height: 300px;
+    overflow-x: auto;
+}
+
+.userToAddControl{
+    margin-top: 5px;
+}
+
+.spacer {
+    flex: 1 1 auto;
+}
+
+.saveButtonContainer{
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+}
