@@ -9,7 +9,7 @@ export class CheckFolderNameService{
 
     checkName(folderId:string, folderName: string){
 
-        return this.http.get(environment.apiBaseUrl + "folders/exists/" + folderName);
+        return this.http.get(environment.apiBaseUrl + "folders/exists/" + folderId + "/" + folderName);
     }
 
 }

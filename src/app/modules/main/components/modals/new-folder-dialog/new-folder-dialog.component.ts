@@ -12,7 +12,7 @@ import { ContentService } from '../../../services/content.service';
   templateUrl: './new-folder-dialog.component.html',
   styleUrls: ['./new-folder-dialog.component.css']
 })
-export class NewFolderDialogComponent{
+export class NewFolderDialogComponent implements OnInit{
 
   folderName: FormControl = new FormControl('', [Validators.required]);
 
@@ -39,8 +39,12 @@ export class NewFolderDialogComponent{
     private snackBarService: SnackBarService,
     private checkFolderNameService: CheckFolderNameService
   ) {
-    this.folderName.setValue('New Folder');
     this.dialogTitle = "Create folder";
+  }
+  ngOnInit(): void {
+
+    this.folderName.setValue('New Folder');
+    this.checkFolderName('New Folder');
   }
 
   folerNameChanged(event: any){
@@ -48,24 +52,29 @@ export class NewFolderDialogComponent{
 
     if(folderName === "") { return }
 
-    this.checkFolderNameService.checkName(this.contentService.currentFolderId,folderName)
-      .subscribe({
-        next : (resp) => {
+    this.checkFolderName(folderName);
+  }
 
-          if(resp == true){
-            this.folderName.setErrors({'nameExists' : resp});
-          }
-          else
-          {
-            this.folderName.setErrors({'nameExists' : null})
-            this.folderName.updateValueAndValidity();
-          }
-        },
-        error: (err) =>{
-          console.error(err);
-          this.snackBarService.openSnackBar("Something went wrong. Please reload !");
+  checkFolderName(folderName:string){
+
+    this.checkFolderNameService.checkName(this.contentService.currentFolderId,folderName)
+    .subscribe({
+      next : (resp) => {
+
+        if(resp == true){
+          this.folderName.setErrors({'nameExists' : resp});
         }
-      })
+        else
+        {
+          this.folderName.setErrors({'nameExists' : null})
+          this.folderName.updateValueAndValidity();
+        }
+      },
+      error: (err) =>{
+        console.error(err);
+        this.snackBarService.openSnackBar("Something went wrong. Please reload !");
+      }
+    })
   }
   
   createFolder(){
