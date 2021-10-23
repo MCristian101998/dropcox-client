@@ -13,6 +13,7 @@ import { UploadDownloadStatusDto } from "../models/UploadDownloadStatusDto";
 import * as fileSaver from 'file-saver';
 import { DownloadProgressDto } from "../models/DownloadProgressDto";
 import { escapeRegExp } from "@angular/compiler/src/util";
+import { PasteFileDto } from "../models/PasteFilesDto";
 
 @Injectable()
 export class ContentService{
@@ -28,6 +29,10 @@ export class ContentService{
     public currentFolderName:string = '';
     public currentFolderIsShared: boolean = false;
     public currentFolderIsOwnedByCurrentUser: boolean = false;
+
+    public filesToCopyId: string[] = [];
+    public filesToCutId: string[] = [];
+    public folderToCopyOrCutFrom: string = '';
 
     public userRootFolderId: string = '';
     public uploadInProgress: boolean = false;
@@ -263,5 +268,49 @@ export class ContentService{
                     this.snackBarService.openSnackBar("Something went wrong ! Please reload.");
                 }
             })
+    }
+
+
+    pasteFIle(){
+
+        var copyOptions = '0';
+        var body: PasteFileDto[] = [];
+
+        if(!this.filesToCopyId.length){
+            copyOptions = "0";
+            this.filesToCutId.forEach(item => {
+                var file = new PasteFileDto();
+                file.id = item;
+                body.push(file);
+            })
+        }
+        else{
+            copyOptions = "1";
+
+            this.filesToCopyId.forEach(item => {
+                var file = new PasteFileDto();
+                file.id = item;
+                body.push(file);
+            })
+        }
+
+        
+
+        console.log(body);
+
+        this.http.put<any>(environment.apiBaseUrl + "folders/move/" + this.currentFolderId + "/?copy=" + copyOptions, body)
+            .subscribe({
+                next: (resp) =>{
+                    this.populateDirectories();
+                    this.navigateToFolder(this.currentFolderId);
+
+                    this.filesToCopyId = [];
+                    this.filesToCutId = [];
+                },
+                error: (err) => {
+                    console.error(err);
+                    this.snackBarService.openSnackBar("Something went wrong ! Please reload.");
+                }
+            });
     }
 }

@@ -1,3 +1,4 @@
+import { SelectionModel } from '@angular/cdk/collections';
 import { AfterViewInit, Component, OnDestroy, OnInit, QueryList, ViewChild } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { SnackBarService } from 'src/app/shared/services/snackBarService';
@@ -30,16 +31,18 @@ export class ContentComponent implements OnInit {
   downloadWindowIsShown: boolean = false;
   downloadFiles: DownloadProgressDto[] = [];
 
-  displayedColumns: string[] = ['fileName', 'owner', 'lastModified'];
+  displayedColumns: string[] = ['select','fileName', 'owner', 'lastModified'];
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
   rowRightClickMenuPosition = {x: '0', y: '0'}
 
   rightClickedRow: FilesDto = new FilesDto();
 
+  isPasteEnabled: boolean = false;
+
 
   isInDrag: boolean = false;
-
+  selection = new SelectionModel<FilesDto>(true, []);
   @ViewChild('optionsTrigger') matMenuTrigger!: MatMenuTrigger;
   @ViewChild('rightClickRowTrigger') rowRightClickTrigger!: MatMenuTrigger;
 
@@ -49,7 +52,29 @@ export class ContentComponent implements OnInit {
     private snackBarService: SnackBarService,
     private userService: UserService,
   ) { }
- 
+
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.files.length;
+    return numSelected === numRows;
+  }
+
+  masterToggle() {
+    if (this.isAllSelected()) {
+      this.selection.clear();
+      return;
+    }
+
+    this.selection.select(...this.files);
+  }
+
+  checkboxLabel(row?: FilesDto): string {
+    if (!row) {
+      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+    }
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
+  }
+
 
   uploadFile(evt: FileList){
 
@@ -189,16 +214,24 @@ export class ContentComponent implements OnInit {
     this.rowRightClickTrigger.toggleMenu();
   }
 
+  // contentContextMenu(event: MouseEvent){
+  //   event.preventDefault();
+
+    
+
+  // }
+
   onDragEnter(event:any){
     this.isInDrag = event;
   }
 
-  onRightClick(event: MouseEvent){
+  onRightClick(event: any){
 
-    if(this.currentFolderUuid == '' || this.currentFolderName == '')
-    {
-      return;
-    }
+    // if(this.currentFolderUuid == '' || this.currentFolderName == '')
+    // {
+    //   return;
+    // }
+    alert("Right Clicked");
 
     event.preventDefault();
 
@@ -242,5 +275,39 @@ export class ContentComponent implements OnInit {
   closeDownloadWindow(){
     this.downloadWindowClosedByUser = true;
     this.downloadWindowIsShown = false;
+  }
+
+  copyFile(){
+
+    this.selection.select(this.rightClickedRow);
+
+    this.contentService.filesToCopyId = [];
+    this.contentService.filesToCutId = [];
+
+    this.selection.selected.forEach(item => {
+      this.contentService.filesToCopyId.push(item.id);
+    })
+    this.contentService.folderToCopyOrCutFrom = this.contentService.currentFolderId;
+    this.isPasteEnabled = true;
+  }
+
+  cutFile(){
+
+    this.selection.select(this.rightClickedRow);
+
+    this.contentService.filesToCutId = [];
+    this.contentService.filesToCopyId = [];
+
+    this.selection.selected.forEach(item => {
+
+      this.contentService.filesToCutId.push(item.id);
+    })
+
+    this.contentService.folderToCopyOrCutFrom = this.contentService.currentFolderId;
+    this.isPasteEnabled = true;
+  }
+
+  pasteFile(){
+    this.contentService.pasteFIle();
   }
 }

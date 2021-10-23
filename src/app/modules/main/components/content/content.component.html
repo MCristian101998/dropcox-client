@@ -7,9 +7,31 @@
     <div class="content"
         appUpload 
         (onFileDropped)="uploadFile($event)"
-        (onDragEnter) = "onDragEnter($event)">
+        (onDragEnter) = "onDragEnter($event)"
+        (contextMenu) = "onRightClick($event)">
         
         <table mat-table [dataSource]="files" class="mat-elevation-z8">
+
+            <ng-container matColumnDef="select">
+                <th mat-header-cell *matHeaderCellDef>
+                  <mat-checkbox 
+                                color = "primary"
+                                (change)="$event ? masterToggle() : null"
+                                [checked]="selection.hasValue() && isAllSelected()"
+                                [indeterminate]="selection.hasValue() && !isAllSelected()"
+                                [aria-label]="checkboxLabel()">
+                  </mat-checkbox>
+                </th>
+                <td mat-cell *matCellDef="let row">
+                  <mat-checkbox 
+                                color = "primary"
+                                (click)="$event.stopPropagation()"
+                                (change)="$event ? selection.toggle(row) : null"
+                                [checked]="selection.isSelected(row)"
+                                [aria-label]="checkboxLabel(row)">
+                  </mat-checkbox>
+                </td>
+              </ng-container>
 
             <ng-container matColumnDef="fileName">
               <th mat-header-cell *matHeaderCellDef class="nameColumn"> Name </th>
@@ -147,6 +169,28 @@
 
 <mat-menu
     #details="matMenu">
+
+    <button 
+        mat-menu-item
+        (click) = "copyFile()">
+        <mat-icon>file_copy</mat-icon>
+        <span>Copy</span>
+    </button>
+
+    <button 
+        mat-menu-item
+        (click) = "cutFile()">
+        <mat-icon>content_cut</mat-icon>
+        <span>Cut</span>
+    </button>
+
+    <button 
+        mat-menu-item
+        (click) = "pasteFile()"
+        [disabled] = '!isPasteEnabled'>
+        <mat-icon>content_paste</mat-icon>
+        <span>Paste</span>
+    </button>
 
     <button 
         mat-menu-item
