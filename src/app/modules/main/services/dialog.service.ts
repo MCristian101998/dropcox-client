@@ -5,6 +5,7 @@ import { ManageAccessInSharedDriveComponent } from "../components/modals/manage-
 import { NewFolderDialogComponent } from "../components/modals/new-folder-dialog/new-folder-dialog.component";
 import { NewSharedDriveDialogComponent } from "../components/modals/new-shared-drive-dialog/new-shared-drive-dialog.component";
 import { RenameFileComponent } from "../components/modals/rename-file/rename-file.component";
+import { PreviewFileComponent } from "../components/modals/preview-file/preview-file.component";
 import { FolderDialogData } from "../models/AddFolderDialogData";
 
 @Injectable()
@@ -49,6 +50,16 @@ export class DialogService{
     openManageSharedFolderAccess(){
         const dialogRef = this.dialog.open(ManageAccessInSharedDriveComponent,{
             width: '450px'
+        })
+    }
+
+    openPreviewFileDialog(fileType:string, fileId: string){
+        const dialogRef = this.dialog.open(PreviewFileComponent,{
+            width: '650px',
+            data: {
+                fileType: fileType,
+                fileId: fileId
+            }
         })
     }
 }

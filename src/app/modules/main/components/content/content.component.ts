@@ -242,6 +242,10 @@ export class ContentComponent implements OnInit {
 
       alert("Previewing audio : " + file.id);
     }
+
+    if(file.fileType.type == 'image'){
+      this.dialogService.openPreviewFileDialog(file.fileType.type, file.id);
+    }
   }
 
   rowRightClick(event: MouseEvent, row: FilesDto){

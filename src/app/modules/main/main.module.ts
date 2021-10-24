@@ -28,6 +28,7 @@ import { SharedFolderService } from './services/shared-folder.service';
 import { DeleteUserDilaogComponent } from './components/modals/delete-user-dilaog/delete-user-dilaog.component';
 import { FileTypeService } from './services/file-type.service';
 import { SearchService } from './services/search.service';
+import { PreviewFileComponent } from './components/modals/preview-file/preview-file.component';
 
 
 @NgModule({
@@ -45,6 +46,7 @@ import { SearchService } from './services/search.service';
     NewSharedDriveDialogComponent,
     ManageAccessInSharedDriveComponent,
     DeleteUserDilaogComponent,
+    PreviewFileComponent,
   ],
   imports: [
     CommonModule,
