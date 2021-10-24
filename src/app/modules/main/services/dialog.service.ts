@@ -53,12 +53,13 @@ export class DialogService{
         })
     }
 
-    openPreviewFileDialog(fileType:string, fileId: string){
+    openPreviewFileDialog(fileType:string, fileId: string, filePath:string){
         const dialogRef = this.dialog.open(PreviewFileComponent,{
             width: '650px',
             data: {
                 fileType: fileType,
-                fileId: fileId
+                fileId: fileId,
+                filePath: filePath
             }
         })
     }

@@ -232,19 +232,11 @@ export class ContentComponent implements OnInit {
     {
       this.contentService.navigateToFolder(file.id);
     }
-    
-    if(file.fileType.type == 'video')
-    {
-      alert("Previewing video : " + file.id);
-    }
 
-    if(file.fileType.type == "audio"){
-
-      alert("Previewing audio : " + file.id);
-    }
-
-    if(file.fileType.type == 'image'){
-      this.dialogService.openPreviewFileDialog(file.fileType.type, file.id);
+    if(file.fileType.type == 'video' ||
+    file.fileType.type == 'audio' ||
+    file.fileType.type == 'image'){
+      this.dialogService.openPreviewFileDialog(file.fileType.type, file.id, file.path);
     }
   }
 

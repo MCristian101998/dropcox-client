@@ -1,1 +1,6 @@
 <img *ngIf='fileType=="image"' [src] = 'imageFile'>
+<video id="video"
+    *ngIf='fileType=="video"'
+    controls>
+    <source [src]="videoUrl">
+</video>
