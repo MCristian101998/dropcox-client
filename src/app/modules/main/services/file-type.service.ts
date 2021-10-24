@@ -9,6 +9,6 @@ export class FileTypeService{
 
     getTypes(){
 
-        return this.http.get<any>(environment.apiBaseUrl + "types");
+        return this.http.get<any>(environment.apiBaseUrl + "fileTypes");
     }
 }

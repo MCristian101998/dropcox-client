@@ -10,6 +10,7 @@ import { FileTypeDto } from '../../models/FileTypeDto';
 import { UploadProgressDto } from '../../models/UploadProgressDto';
 import { ContentService } from '../../services/content.service';
 import { DialogService } from '../../services/dialog.service';
+import { SearchService } from '../../services/search.service';
 
 @Component({
   selector: 'app-content',
@@ -22,6 +23,9 @@ export class ContentComponent implements OnInit {
   files: FilesDto[] = [];
   currentFolderUuid:string = "";
   currentFolderName: string = "";
+  showSearchResult:boolean = false;
+
+  searchResult: FilesDto[] = [];
 
   uploadWindowClosedByUser: boolean = false;
   uploadWindowsIsShown: boolean = false;
@@ -40,17 +44,20 @@ export class ContentComponent implements OnInit {
 
   isPasteEnabled: boolean = false;
 
+  private socket = new WebSocket('ws://localhost:6300/topic');
 
   isInDrag: boolean = false;
   selection = new SelectionModel<FilesDto>(true, []);
   @ViewChild('optionsTrigger') matMenuTrigger!: MatMenuTrigger;
   @ViewChild('rightClickRowTrigger') rowRightClickTrigger!: MatMenuTrigger;
 
+
   constructor(
     private contentService: ContentService,
     private dialogService: DialogService,
     private snackBarService: SnackBarService,
     private userService: UserService,
+    private searchService: SearchService
   ) { }
 
   isAllSelected() {
@@ -124,6 +131,36 @@ export class ContentComponent implements OnInit {
         if(file.fileType.type == 'directory'){
           file.image = "/assets/images/folder.png";
         }
+        else if(file.fileType.type == "text"){
+          file.image = "/assets/images/text.png";
+        }
+        else if(file.fileType.type == "image"){
+          file.image = "/assets/images/image.png";
+        }
+        else if(file.fileType.type == "video"){
+          file.image = "/assets/images/video.png";
+        }
+        else if(file.fileType.type == "excel"){
+          file.image = "/assets/images/excel.png";
+        }
+        else if(file.fileType.type == "pdf"){
+          file.image = "/assets/images/pdf.png";
+        }
+        else if(file.fileType.type == "word"){
+          file.image = "/assets/images/word.png";
+        }
+        else if(file.fileType.type == "powerpoint"){
+          file.image = "/assets/images/powerPoint.png";
+        }
+        else if(file.fileType.type == "audio"){
+          file.image = "/assets/images/audio.png";
+        }
+        else if(file.fileType.type == "archive"){
+          file.image = "/assets/images/archive.png";
+        }
+        else if(file.fileType.type == "unknown"){
+          file.image = "/assets/images/file.png";
+        }
       })
     })
 
@@ -181,6 +218,11 @@ export class ContentComponent implements OnInit {
           }
         })
       }
+    })
+
+    this.searchService.filesSearched.subscribe((data) => {
+      this.searchResult = data;
+      this.showSearchResult = true;
     })
   }
 
@@ -309,5 +351,12 @@ export class ContentComponent implements OnInit {
 
   pasteFile(){
     this.contentService.pasteFIle();
+  }
+
+  closeSearchResult(){
+    this.showSearchResult = false;
+    this.searchResult = [];
+
+    this.contentService.navigateToFolder(this.contentService.currentFolderId);
   }
 }

@@ -184,6 +184,31 @@ table{
     margin: auto;
 }
 
+.returnFromSearch{
+    border-bottom: solid 1px #DCDCDC;
+}
+
+.returnFromSearch .mat-icon:hover{
+    cursor: pointer;
+}
+
+.returnFromSearch p{
+    padding-left: 15px;
+
+}
+
+.noSearchResult{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 100px;
+}
+
+.noSearchResult img{
+    width: 300px;
+}
+
 @media(max-width: 383px){
 
     .fileDialog{

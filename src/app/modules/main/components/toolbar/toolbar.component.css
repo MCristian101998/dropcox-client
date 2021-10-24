@@ -37,3 +37,128 @@ button:hover{
 .options button:hover{
   text-decoration: underline rgba(0,0,0,.4);
 }
+.space{
+  padding-right: 134px;
+}
+
+.searchForm{
+  
+  background: #f1f3f4;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  width: 470px;
+  transition: background 100ms ease-in,width 100ms ease-out;
+  height: 48px;
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  justify-items: center;
+  align-items: center;
+}
+
+.searchForm .searchInput{
+  font:normal 16px Google Sans,Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
+  outline: none;
+  box-sizing: border-box;
+  font-variant-ligatures: none;
+  border: none;
+  padding: 0px;
+  margin: 0px;
+  height: auto;
+  width: 305px;
+  height: 40px;
+  background: transparent;
+  color: black;
+}
+
+.searchForm .inputPrefix{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-items: center;
+  width: 40px;
+  height: 30px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.searchForm .inputPrefix .mat-icon{
+  font-size: 25px;
+}
+
+.searchForm .inputSuffix{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-items: center;
+  width: 40px;
+  height: 30px;
+  padding-left: 10px;
+  padding-right: 20px;
+  display: flex;
+  flex-direction: row;
+}
+
+.searchForm .searchInput input{
+  width: 350px;
+}
+
+.advancedSearch{
+  left: 256px;
+  top: 59px;
+  min-width: 450px;
+  z-index: 220;
+  margin-top: -2px;
+  background: white;
+  position: absolute;
+  padding-left: 40px;
+  padding-right: 40px;
+  padding-top: 30px;
+  box-shadow: 5px 10px #888888;
+}
+
+.advancedSearch .fileType{
+  display: flex;
+  flex-direction: row;
+}
+
+.advancedSearch .fileType .mat-form-field{
+  padding-left: 40px;
+  font-size: 14px;
+}
+
+.advancedSearch .range{
+  display:  flex;
+  flex-direction: row;
+}
+
+.advancedSearch .range .mat-form-field{
+  padding-left: 55px;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.advancedSearch .location{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.advancedSearch .location .mat-checkbox{
+  padding-left: 40px;
+}
+
+.advancedSearch .actions{
+  padding-top: 20px;
+  padding-bottom: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.close-button{
+  float: right;
+  top:-24px;
+  right:-24px;
+}

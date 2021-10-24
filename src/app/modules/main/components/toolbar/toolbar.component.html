@@ -1,12 +1,45 @@
 <mat-toolbar color="primary">
    <img class="logo" src = "/assets/images/logo.png">
 
-   <button 
+   <button
+        class="toggleSideNav" 
         mat-icon-button
         matTooltip = "Toggle Sidenav"
         (click) = "toggleSidenav()">
         <mat-icon>menu</mat-icon>
     </button>
+    
+    <div class="space"></div>
+
+    <div class="searchForm">
+        <div class="inputPrefix">
+            <button mat-icon-button
+                    (click) = "search()">
+                <mat-icon color="primary">search</mat-icon>
+            </button>
+        </div>
+        <div class="input">
+            <input 
+                [formControl] =searchFormControl  
+                class="searchInput" 
+                type="text" 
+                matInput 
+                placeholder="Search"
+                (keyup.enter) = "search()"
+                (input) = "inputChanged($event)">
+        </div>
+        <div class="inputSuffix">
+            <button mat-icon-button
+                    (click) = "clearSearch()">
+                <mat-icon *ngIf="searchFormControlHasText" color="primary">close</mat-icon>
+            </button>
+            <span class="spacer"></span>
+            <button mat-icon-button style="margin-left: auto;"
+                    (click) = "toggleAdvancedSearch()">
+                <mat-icon color="primary">tune</mat-icon>
+            </button>
+        </div>
+    </div>
 
    <span class="spacer"></span>
 
@@ -38,3 +71,62 @@
 
     </div>
 </mat-menu>
+
+
+<div class="advancedSearch" *ngIf="advancedSerachIsOpened">
+
+    <button 
+        mat-icon-button class="close-button"
+        (click) = "toggleAdvancedSearch()">
+        <mat-icon class="close-icon" color="primary">close</mat-icon>
+    </button>
+
+    <div class="frmAdvancedSearch">
+
+        
+        <div class="fileType">
+            <h5 class="label">File Type</h5>
+
+            <mat-form-field appearance="fill">
+                <mat-label>File Type</mat-label>
+                <mat-select [formControl]="dataTypeControl">
+                  <mat-option *ngFor="let dataType of dataTypes" [value]="dataType.type">
+                      <img style="width: 20px;" [src] = dataType.image>
+                      {{dataType.type}}
+                </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <div class="range">
+            <h5 class="label">Owner</h5>
+            <mat-form-field appearance="fill">
+                <mat-label>Owner</mat-label>
+                <mat-select [formControl] = "ownerControl">
+                    <mat-option *ngFor = "let key of fileOwnerKeys" [value]="key">{{fileOwner[key]}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <div class="location">
+            <h5 class="label">Location</h5>
+            <mat-checkbox [formControl] = "locationControl"
+                color = "primary">
+                All Folders
+            </mat-checkbox>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <div class="actions">
+            <button mat-raised-button color="primary"
+                (click) = "advancedSearch()">
+                Search
+            </button>
+        </div>
+    </div>
+</div>
