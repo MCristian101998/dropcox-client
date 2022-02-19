@@ -1,0 +1,23 @@
+.close-button{
+    float: right;
+    top:-24px;
+    right:-24px;
+    z-index: 2000;
+  }
+
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-left: 40px;
+}
+
+.container img{
+    max-width: 500px;
+    border: 1px solid #3f51b5;
+}
+
+.container video{
+    max-width: 500px;
+}

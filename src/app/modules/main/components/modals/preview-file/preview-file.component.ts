@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 import { SnackBarService } from 'src/app/shared/services/snackBarService';
+import { UserService } from 'src/app/shared/services/user.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -18,16 +19,27 @@ export class PreviewFileComponent implements OnInit {
   videoUrl:any = null;
   filePath:string = '';
   videoFile:any;
+  username!: string;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private http: HttpClient,
     private snackBarService: SnackBarService,
-    private domSanitizer: DomSanitizer
+    private domSanitizer: DomSanitizer,
+    private userService: UserService,
+    private dialogRef: MatDialogRef<PreviewFileComponent>
   ) {
     this.fileType = data.fileType;
     this.fileId = data.fileId;
     this.filePath = data.filePath;
+
+
+    var user = this.userService.getCurrentUser();
+
+    if(user != null)
+    {
+      this.username = user.username;
+    }
   }
 
   ngOnInit(): void {
@@ -36,22 +48,14 @@ export class PreviewFileComponent implements OnInit {
     reader.onload = (e) => this.imageFile = e.target?.result;
 
     if(this.fileType == 'image'){
-      this.http.get<any>(environment.apiBaseUrl + "media/image/" + this.fileId)
-        .subscribe({
-          next:(resp) =>{
-
-            let obj = 'data:image/png;base64,' + resp;
-
-            this.imageFile = this.domSanitizer.bypassSecurityTrustUrl(obj);
-          },
-          error:(err) =>{
-            console.error(err);
-            this.snackBarService.openSnackBar("Something went wrong! Please reload.")
-          }
-        })
+      this.imageFile = environment.apiBaseUrl + "media/image/"+ this.username + this.filePath;
     }
     else if(this.fileType == 'video'){
-      this.videoUrl = environment.apiBaseUrl + 'media/video/' + this.filePath;
+      this.videoUrl = environment.apiBaseUrl + 'media/image/'+ this.username + this.filePath;
     }
+  }
+
+  closeModal(){
+    this.dialogRef.close();
   }
 }
