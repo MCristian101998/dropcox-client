@@ -172,6 +172,7 @@ table{
 .fileDialog .content .item .fileName{
     align-self: center;
     justify-self: center;
+    width: 200px;
 }
 
 .fileDialog .content .item img{

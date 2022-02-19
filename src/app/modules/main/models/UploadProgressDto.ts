@@ -4,4 +4,5 @@ export class UploadProgressDto{
     file!: File;
     progress!: number;
     status!: UploadDownloadStatusDto;
+    uploadFileName!: string;
 }

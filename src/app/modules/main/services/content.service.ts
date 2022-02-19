@@ -189,14 +189,14 @@ export class ContentService{
                     progress = Math.round(event.loaded / event.total * 100);
 
                     files.forEach(item =>{
-                        this.onFileUploading.emit({file: item, progress: progress, status: UploadDownloadStatusDto.InProgress});
+                        this.onFileUploading.emit({file: item, progress: progress, status: UploadDownloadStatusDto.InProgress, uploadFileName: item.name});
                     })
                 }
                 break;
               case HttpEventType.Response:
 
                 files.forEach(item =>{
-                    this.onFileUploading.emit({file: item, progress: progress, status: UploadDownloadStatusDto.Done});
+                    this.onFileUploading.emit({file: item, progress: progress, status: UploadDownloadStatusDto.Done, uploadFileName: item.name});
                 });
 
                 this.uploadInProgress = false;

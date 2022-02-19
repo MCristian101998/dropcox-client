@@ -183,6 +183,7 @@ export class ContentComponent implements OnInit {
       else
       {
         this.uploadFiles.forEach(item =>{
+          
 
           if(item.file == data.file)
           {
@@ -191,6 +192,24 @@ export class ContentComponent implements OnInit {
           }
         })
       }
+
+      this.uploadFiles.forEach(item =>{
+        if(item.uploadFileName.length > 20){
+          item.uploadFileName = item.uploadFileName.slice(0, 20) + "...";
+        }
+
+        if(item.uploadFileName.length < 20)
+        {
+          var spacesToAdd = 20 - item.uploadFileName.length;
+
+          item.uploadFileName = item.uploadFileName + Array(spacesToAdd).fill(' ').join('');
+
+
+        }
+
+      })
+
+
     })
 
     this.contentService.onFileDownloading.subscribe((data) => {
@@ -218,6 +237,15 @@ export class ContentComponent implements OnInit {
           }
         })
       }
+
+      this.downloadFiles.forEach(item =>{
+
+        if(item.fileName.length > 20)
+        {
+          item.fileName = item.fileName.slice(0, 20) + "...";
+        }
+      })
+
     })
 
     this.searchService.filesSearched.subscribe((data) => {
