@@ -29,13 +29,14 @@
                 (input) = "inputChanged($event)">
         </div>
         <div class="inputSuffix">
-            <button mat-icon-button
+            <button mat-icon-button *ngIf="searchFormControlHasText"
                     (click) = "clearSearch()">
-                <mat-icon *ngIf="searchFormControlHasText" color="primary">close</mat-icon>
+                <mat-icon  color="primary">close</mat-icon>
             </button>
             <span class="spacer"></span>
-            <button mat-icon-button style="margin-left: auto;"
-                    (click) = "toggleAdvancedSearch()">
+            <button mat-icon-button
+                    (click) = "toggleAdvancedSearch()"
+                    [ngClass]="{'advancedSearchBtn': searchFormControlHasText == false}">
                 <mat-icon color="primary">tune</mat-icon>
             </button>
         </div>

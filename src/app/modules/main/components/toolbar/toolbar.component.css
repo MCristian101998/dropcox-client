@@ -99,6 +99,10 @@ button:hover{
   flex-direction: row;
 }
 
+.advancedSearchBtn{
+  margin-left: 40px;
+}
+
 .searchForm .searchInput input{
   width: 350px;
 }
