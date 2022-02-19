@@ -24,8 +24,24 @@ export class NavigationComponent implements OnInit{
 
     this.contentService.navigatedToDirectory.subscribe((data) => {
 
-      this.path = this.contentService.currentFolderPath;
+      this.path = "";
+
+      var tempPath = this.contentService.currentFolderPath;
       
+      var itemsInPath = tempPath.split('/');
+      let newArr: string[] = [];
+
+      for(var i = 0; i < itemsInPath.length; i++){
+        var temp = itemsInPath[i];
+
+        if(temp.length >= 10){
+          temp = temp.slice(0, 10) + "...";
+        }
+        newArr.push(temp);
+      }
+      newArr.forEach((item) =>{
+        this.path += item + "/"; 
+      })
 
       this.hasParent = this.contentService.currentFolderHasParent;
       this.parentId = this.contentService.currentFolderParentId;

@@ -96,6 +96,15 @@ table{
     box-shadow: inset 1px 1px 0 rgb(0 0 0 / 10%), inset 0 -1px 0 rgb(0 0 0 / 7%);
 } 
 
+.mat-row{
+    max-width: 200px;
+}
+
+.mat-cell{
+    max-width: 550px;
+    text-overflow: ellipsis;
+}
+
 .mat-cell:hover{
     color: #3F51B5;
 }

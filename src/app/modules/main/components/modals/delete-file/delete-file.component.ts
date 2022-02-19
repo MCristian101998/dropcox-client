@@ -19,6 +19,13 @@ export class DeleteFileComponent{
     private dialogRef: MatDialogRef<DeleteFileComponent>) {
 
       this.fileId = data.fileId;
+
+      if(this.data.fileName.length > 30)
+      {
+        this.data.fileName = this.data.fileName.slice(0,30) + "...";
+      }
+
+
       this.dialogTitle = "Are you sure you want to delete " + this.data.fileName + " ?";
 
   }

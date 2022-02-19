@@ -42,7 +42,10 @@ export class QuickNavigationComponent implements OnInit {
 
     this.contentService.directoriesLoaded.subscribe((msg) => {
 
+      
       var folders = this.contentService.directories;
+
+      console.log(this.contentService.directories);
 
       var rootFolderId = "";
 
@@ -60,9 +63,33 @@ export class QuickNavigationComponent implements OnInit {
           folder.fileName = "Shared Folders";
         }
 
+        console.log(folder.fileName + folder.fileName.length);
+
+        if(folder.fileName.length > 10){
+          console.log("quick nav filename " + folder.fileName + " length > 10");
+          folder.fileName = folder.fileName.slice(0,10) + "...";
+        }
+        this.abbreviateFolderNames(folder);
+
       })
       this.dataSource.data = folders;
     });
+  }
+
+  abbreviateFolderNames(folder: DirectoriesDto){
+
+    if(folder.fileName.length > 15)
+    {
+      var fileName = folder.fileName;
+      folder.fileName = folder.fileName.slice(0, 15) + "...";
+    }
+
+    if(folder.subfolders !== undefined){
+      folder.subfolders.forEach((sub) =>{
+        this.abbreviateFolderNames(sub);
+      })
+    }
+
   }
 
   nodeClicked(node: DirectoriesDto){

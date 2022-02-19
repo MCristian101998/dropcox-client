@@ -29,6 +29,7 @@
 .mat-tree-node {
     min-height: 25px;
     min-width: 30px;
+    text-overflow: ellipsis;
 }
 
 
