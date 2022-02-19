@@ -1,6 +1,7 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { AfterViewInit, Component, OnDestroy, OnInit, QueryList, ViewChild } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
+import * as SockJS from 'sockjs-client';
 import { SnackBarService } from 'src/app/shared/services/snackBarService';
 import { UserService } from 'src/app/shared/services/user.service';
 import { FolderDialogData } from '../../models/AddFolderDialogData';
@@ -44,7 +45,7 @@ export class ContentComponent implements OnInit {
 
   isPasteEnabled: boolean = false;
 
-  private socket = new WebSocket('ws://localhost:6300/topic');
+  private socket = new SockJS('http://localhost:6300/ws');
 
   isInDrag: boolean = false;
   selection = new SelectionModel<FilesDto>(true, []);
@@ -165,8 +166,6 @@ export class ContentComponent implements OnInit {
     })
 
     this.contentService.onFileUploading.subscribe((data) => {
-
-
       if(!this.uploadWindowClosedByUser && !this.downloadWindowIsShown)
       {
         this.uploadWindowsIsShown = true;
@@ -203,13 +202,8 @@ export class ContentComponent implements OnInit {
           var spacesToAdd = 20 - item.uploadFileName.length;
 
           item.uploadFileName = item.uploadFileName + Array(spacesToAdd).fill(' ').join('');
-
-
         }
-
       })
-
-
     })
 
     this.contentService.onFileDownloading.subscribe((data) => {
