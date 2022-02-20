@@ -1,5 +1,5 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { AfterViewInit, Component, OnDestroy, OnInit, QueryList, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, HostListener, OnDestroy, OnInit, QueryList, ViewChild } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
 import * as SockJS from 'sockjs-client';
 import { SnackBarService } from 'src/app/shared/services/snackBarService';
@@ -45,7 +45,7 @@ export class ContentComponent implements OnInit {
 
   isPasteEnabled: boolean = false;
 
-  private socket = new SockJS('http://localhost:6300/ws');
+  private socket = new SockJS('http://localhost:6300/topic');
 
   isInDrag: boolean = false;
   selection = new SelectionModel<FilesDto>(true, []);
