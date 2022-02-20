@@ -130,25 +130,24 @@ export class ContentComponent implements OnInit {
 
       let socket = new SockJS('http://localhost:6300/stomp');
       let client = Stomp.over(socket);
-      let socketSubscription = new StompSubscription();
+      let socketSubscription!: StompSubscription;
 
       if(this.contentService.currentFolderIsShared){
         console.log("in a shared folder. connecting to web socket.")
         client.connect({}, (frame: any) =>{
-          socketSubscription = client.subscribe("/topic/greetings", payload =>{
+          socketSubscription = client.subscribe("/topic/" + this.contentService.currentFolderId, payload =>{
             this.contentService.navigateToFolder(this.contentService.currentFolderId);
           });
         });
       }
       else
       {
-        // if(client !== undefined && socketSubscription !== undefined)
-        // {
-        //   client.unsubscribe(socketSubscription.id);
-        // }
+        if(client !== undefined && (socketSubscription != null || socketSubscription != undefined))
+        {
+          socketSubscription.unsubscribe;
+        }
       }
 
-      console.log(socketSubscription);
       this.files = this.contentService.currentFolderContent;
       this.currentFolderUuid = this.contentService.currentFolderId;
       this.currentFolderName = this.contentService.currentFolderName;
