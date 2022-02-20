@@ -42,6 +42,10 @@
     
 }
 
+.loginContainer .formField{
+    margin-bottom: 10px;
+}
+
 .loginContainer .options .register{
     margin-top: 10px;
 }

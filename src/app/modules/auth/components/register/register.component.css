@@ -35,6 +35,14 @@
     color: #3F51B5;
 }
 
+.registerContainer .formField{
+    margin-bottom: 10px;
+}
+
+.registerContainer .formField mat-error{
+    width: 300px;
+}
+
 .registerContainer .options{
     display: flex;
     flex-direction: row;
