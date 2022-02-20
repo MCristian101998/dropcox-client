@@ -1,6 +1,8 @@
 import { SelectionModel } from '@angular/cdk/collections';
+import { StyleCompiler } from '@angular/compiler';
 import { AfterViewInit, Component, HostListener, OnDestroy, OnInit, QueryList, ViewChild } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
+import { Client, Stomp, StompSubscription } from '@stomp/stompjs';
 import * as SockJS from 'sockjs-client';
 import { SnackBarService } from 'src/app/shared/services/snackBarService';
 import { UserService } from 'src/app/shared/services/user.service';
@@ -45,7 +47,7 @@ export class ContentComponent implements OnInit {
 
   isPasteEnabled: boolean = false;
 
-  private socket = new SockJS('http://localhost:6300/topic');
+  
 
   isInDrag: boolean = false;
   selection = new SelectionModel<FilesDto>(true, []);
@@ -59,7 +61,9 @@ export class ContentComponent implements OnInit {
     private snackBarService: SnackBarService,
     private userService: UserService,
     private searchService: SearchService
-  ) { }
+  ) { 
+    
+  }
 
   isAllSelected() {
     const numSelected = this.selection.selected.length;
@@ -124,6 +128,27 @@ export class ContentComponent implements OnInit {
 
     this.contentService.navigatedToDirectory.subscribe((data) => {
 
+      let socket = new SockJS('http://localhost:6300/stomp');
+      let client = Stomp.over(socket);
+      let socketSubscription = new StompSubscription();
+
+      if(this.contentService.currentFolderIsShared){
+        console.log("in a shared folder. connecting to web socket.")
+        client.connect({}, (frame: any) =>{
+          socketSubscription = client.subscribe("/topic/greetings", payload =>{
+            this.contentService.navigateToFolder(this.contentService.currentFolderId);
+          });
+        });
+      }
+      else
+      {
+        // if(client !== undefined && socketSubscription !== undefined)
+        // {
+        //   client.unsubscribe(socketSubscription.id);
+        // }
+      }
+
+      console.log(socketSubscription);
       this.files = this.contentService.currentFolderContent;
       this.currentFolderUuid = this.contentService.currentFolderId;
       this.currentFolderName = this.contentService.currentFolderName;
