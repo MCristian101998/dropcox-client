@@ -8,7 +8,7 @@
         appUpload 
         (onFileDropped)="uploadFile($event)"
         (onDragEnter) = "onDragEnter($event)"
-        (contextMenu) = "onRightClick($event)">
+        (contextmenu) = "onRightClick($event)">
         
         <table mat-table [dataSource]="files" class="mat-elevation-z8">
 
@@ -37,7 +37,7 @@
               <th mat-header-cell *matHeaderCellDef class="nameColumn"> Name </th>
               <td mat-cell *matCellDef="let file">
                     <img style="width: 20px;" src="{{file.image}}">
-                   <p>{{file.fileName}}</p> 
+                    {{file.fileName}}
                 </td>
             </ng-container>
           
@@ -160,8 +160,7 @@
         <p>Search Result</p>
     </mat-toolbar>
 
-    <div class="content"
-        (contextMenu) = "onRightClick($event)">
+    <div class="content">
         
         <table mat-table [dataSource]="searchResult" class="mat-elevation-z8" *ngIf = "searchResult.length">
 
@@ -237,6 +236,14 @@
     <button mat-menu-item (click) = "openCreateFolderDirectory()">
       <mat-icon>add</mat-icon>
       <span>Add Folder</span>
+    </button>
+
+    <button 
+        mat-menu-item
+        (click) = "pasteFile()"
+        [disabled] = '!isPasteEnabled'>
+        <mat-icon>content_paste</mat-icon>
+        <span>Paste</span>
     </button>
 </mat-menu>
 

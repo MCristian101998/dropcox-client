@@ -263,7 +263,6 @@ export class ContentComponent implements OnInit {
   }
 
   rowRightClick(event: MouseEvent, row: FilesDto){
-
     event.preventDefault();
 
     this.rowRightClickMenuPosition.x = event.clientX + 'px'; 
@@ -274,26 +273,17 @@ export class ContentComponent implements OnInit {
     this.rowRightClickTrigger.toggleMenu();
   }
 
-  // contentContextMenu(event: MouseEvent){
-  //   event.preventDefault();
-
-    
-
-  // }
-
   onDragEnter(event:any){
     this.isInDrag = event;
   }
 
   onRightClick(event: any){
-
-    // if(this.currentFolderUuid == '' || this.currentFolderName == '')
-    // {
-    //   return;
-    // }
-    alert("Right Clicked");
-
     event.preventDefault();
+
+    if(this.rowRightClickTrigger.menuOpen)
+    {
+      return;
+    }
 
     this.menuTopLeftPosition.x = event.clientX + 'px'; 
     this.menuTopLeftPosition.y = event.clientY + 'px'; 
