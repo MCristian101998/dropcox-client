@@ -7,6 +7,7 @@ import { NewSharedDriveDialogComponent } from "../components/modals/new-shared-d
 import { RenameFileComponent } from "../components/modals/rename-file/rename-file.component";
 import { PreviewFileComponent } from "../components/modals/preview-file/preview-file.component";
 import { FolderDialogData } from "../models/AddFolderDialogData";
+import { FilesDto } from "../models/FilesDto";
 
 @Injectable()
 export class DialogService{
@@ -38,11 +39,10 @@ export class DialogService{
         })
     }
 
-    openDeleteFileDialog(fileId: string, fileName: string){
+    openDeleteFileDialog(itemToDelete: FilesDto[]){
         const dialogRef = this.dialog.open(DeleteFileComponent,{
             data: {
-                fileId : fileId,
-                fileName: fileName
+                filesToDelete: itemToDelete
             }
         })
     }

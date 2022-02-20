@@ -33,6 +33,7 @@ export class ContentService{
     public filesToCopyId: string[] = [];
     public filesToCutId: string[] = [];
     public folderToCopyOrCutFrom: string = '';
+    public filesToDeletedIds: string[] = [];
 
     public userRootFolderId: string = '';
     public uploadInProgress: boolean = false;
@@ -151,8 +152,8 @@ export class ContentService{
             })
     }
 
-    deleteFile(fileId: string){
-        this.http.delete<any>(environment.apiBaseUrl + "folders/" + fileId)
+    deleteFiles(){
+        this.http.put<any>(environment.apiBaseUrl + "folders/delete", {filesToDeleteIds: this.filesToDeletedIds})
             .subscribe({
 
                 next: (resp) => {
@@ -270,8 +271,7 @@ export class ContentService{
             })
     }
 
-
-    pasteFIle(){
+    pasteFile(){
 
         var copyOptions = '0';
         var body: PasteFileDto[] = [];
@@ -293,10 +293,6 @@ export class ContentService{
                 body.push(file);
             })
         }
-
-        
-
-        console.log(body);
 
         this.http.put<any>(environment.apiBaseUrl + "folders/move/" + this.currentFolderId + "/?copy=" + copyOptions, body)
             .subscribe({

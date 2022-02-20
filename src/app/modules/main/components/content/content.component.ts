@@ -335,7 +335,17 @@ export class ContentComponent implements OnInit {
   }
 
   deleteFile(){
-    this.dialogService.openDeleteFileDialog(this.rightClickedRow.id, this.rightClickedRow.fileName);
+    this.selection.select(this.rightClickedRow);
+
+    this.contentService.filesToDeletedIds = [];
+
+    let itemsToDelete: FilesDto[] = [];
+    this.selection.selected.forEach(item =>{
+      this.contentService.filesToDeletedIds.push(item.id);
+      itemsToDelete.push(item);
+    })
+
+    this.dialogService.openDeleteFileDialog(itemsToDelete);
   }
 
   downloadFile(){
@@ -383,7 +393,7 @@ export class ContentComponent implements OnInit {
   }
 
   pasteFile(){
-    this.contentService.pasteFIle();
+    this.contentService.pasteFile();
   }
 
   closeSearchResult(){

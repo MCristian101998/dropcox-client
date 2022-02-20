@@ -41,11 +41,7 @@ export class QuickNavigationComponent implements OnInit {
     this.contentService.populateDirectories();
 
     this.contentService.directoriesLoaded.subscribe((msg) => {
-
-      
       var folders = this.contentService.directories;
-
-      console.log(this.contentService.directories);
 
       var rootFolderId = "";
 
@@ -63,10 +59,7 @@ export class QuickNavigationComponent implements OnInit {
           folder.fileName = "Shared Folders";
         }
 
-        console.log(folder.fileName + folder.fileName.length);
-
         if(folder.fileName.length > 10){
-          console.log("quick nav filename " + folder.fileName + " length > 10");
           folder.fileName = folder.fileName.slice(0,10) + "...";
         }
         this.abbreviateFolderNames(folder);
