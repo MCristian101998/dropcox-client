@@ -18,6 +18,10 @@
     margin-bottom: 5px;
 }
 
+.container .userToAddControl{
+    margin-bottom: 15px;
+}
+
 .container .content .mat-list{
     max-height: 300px;
     overflow-x: auto;
