@@ -29,6 +29,7 @@ import { DeleteUserDilaogComponent } from './components/modals/delete-user-dilao
 import { FileTypeService } from './services/file-type.service';
 import { SearchService } from './services/search.service';
 import { PreviewFileComponent } from './components/modals/preview-file/preview-file.component';
+import { RenameSharedDirectoriesComponent } from './components/modals/rename-shared-directories/rename-shared-directories.component';
 
 
 @NgModule({
@@ -47,6 +48,7 @@ import { PreviewFileComponent } from './components/modals/preview-file/preview-f
     ManageAccessInSharedDriveComponent,
     DeleteUserDilaogComponent,
     PreviewFileComponent,
+    RenameSharedDirectoriesComponent,
   ],
   imports: [
     CommonModule,

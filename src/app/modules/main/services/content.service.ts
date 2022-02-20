@@ -43,6 +43,7 @@ export class ContentService{
     navigatedToDirectory= new EventEmitter<DirectoriesDto>();
     onFileUploading = new EventEmitter<UploadProgressDto>();
     onFileDownloading = new EventEmitter<DownloadProgressDto>();
+    filesdeleted = new EventEmitter<any>();
 
     constructor(
         private http: HttpClient,
@@ -152,18 +153,47 @@ export class ContentService{
             })
     }
 
+    renameSharedDirectory(fileToRename: RenameFileDto){
+        this.http.put<any>(environment.apiBaseUrl + "folders/shared", fileToRename)
+        .subscribe({
+            next: (resp) => {
+
+                this.populateDirectories();
+                this.navigateToFolder(this.currentFolderId);
+            },
+            error: (err) => {
+                console.error(err);
+                this.snackBarService.openSnackBar('Something went wrong ! Please reload.')
+            }
+        })
+    }
+
     deleteFiles(){
-        this.http.put<any>(environment.apiBaseUrl + "folders/delete", {filesToDeleteIds: this.filesToDeletedIds})
+
+        var filesToDel = this.filesToDeletedIds;
+        this.filesToDeletedIds = [];
+
+        this.http.put<any>(environment.apiBaseUrl + "folders/delete", {filesToDeleteIds: filesToDel})
             .subscribe({
 
                 next: (resp) => {
-                    this.populateDirectories();
-                    this.navigateToFolder(this.currentFolderId);
+                    // this.populateDirectories();
+                    // this.navigateToFolder(this.currentFolderId);
                 },
                 error: (err) => {
                     console.error(err);
                     this.snackBarService.openSnackBar('Something went wrong ! Please reload.')
                 }
+            }).add(()=>{
+
+                setTimeout(()=>{          
+                }, 20000000);
+
+
+                this.populateDirectories();
+                this.navigateToFolder(this.currentFolderId);
+
+                this.filesdeleted.emit();
             })
     }
 
@@ -201,6 +231,9 @@ export class ContentService{
                 });
 
                 this.uploadInProgress = false;
+
+                setTimeout(()=>{          
+                }, 2000);
 
                 this.populateDirectories();
                 this.navigateToFolder(this.currentFolderId);

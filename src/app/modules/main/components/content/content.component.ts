@@ -151,6 +151,10 @@ export class ContentComponent implements OnInit {
       this.files = this.contentService.currentFolderContent;
       this.currentFolderUuid = this.contentService.currentFolderId;
       this.currentFolderName = this.contentService.currentFolderName;
+
+      console.log(this.contentService.currentFolderId);
+      console.log(this.files);
+
       this.files.forEach(file => {
   
         if(file.fileType.type == 'directory'){
@@ -270,6 +274,16 @@ export class ContentComponent implements OnInit {
       this.searchResult = data;
       this.showSearchResult = true;
     })
+
+    this.contentService.filesdeleted.subscribe((data) =>{
+
+      console.log("selection before clear", this.selection.selected);
+
+      this.selection.clear();
+
+      console.log("selection after clear", this.selection.selected);
+
+    })
   }
 
   rowDoubleClick(file: FilesDto){
@@ -337,6 +351,8 @@ export class ContentComponent implements OnInit {
     this.selection.select(this.rightClickedRow);
 
     this.contentService.filesToDeletedIds = [];
+
+    console.log("selected items ", this.selection.selected);
 
     let itemsToDelete: FilesDto[] = [];
     this.selection.selected.forEach(item =>{

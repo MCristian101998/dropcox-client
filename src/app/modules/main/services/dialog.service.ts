@@ -8,6 +8,7 @@ import { RenameFileComponent } from "../components/modals/rename-file/rename-fil
 import { PreviewFileComponent } from "../components/modals/preview-file/preview-file.component";
 import { FolderDialogData } from "../models/AddFolderDialogData";
 import { FilesDto } from "../models/FilesDto";
+import { RenameSharedDirectoriesComponent } from "../components/modals/rename-shared-directories/rename-shared-directories.component";
 
 @Injectable()
 export class DialogService{
@@ -35,6 +36,12 @@ export class DialogService{
     openRenameFileDialog(renameFolderData: any){
 
         const dialogRef = this.dialog.open(RenameFileComponent, {
+            data: renameFolderData
+        })
+    }
+
+    openRenameSharedDirectoryDialog(renameFolderData: any){
+        const dialogRef = this.dialog.open(RenameSharedDirectoriesComponent,{
             data: renameFolderData
         })
     }

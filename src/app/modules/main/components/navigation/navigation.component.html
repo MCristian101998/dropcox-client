@@ -18,7 +18,8 @@
 </mat-toolbar>
 
 <mat-menu #optionsMenu="matMenu">
-    <button mat-menu-item>
+    <button mat-menu-item
+        (click)="renameSharedDirectory()">
         <mat-icon>drive_file_rename_outline</mat-icon>
         Rename Drive
     </button>

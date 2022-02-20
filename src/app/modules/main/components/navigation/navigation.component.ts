@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FolderDialogData } from '../../models/AddFolderDialogData';
 import { ContentService } from '../../services/content.service';
 import { DialogService } from '../../services/dialog.service';
 
@@ -57,5 +58,13 @@ export class NavigationComponent implements OnInit{
 
   openManageFolderAccess(){
     this.dialogService.openManageSharedFolderAccess();
+  }
+
+  renameSharedDirectory(){
+    var dialogData = new FolderDialogData();
+    dialogData.folderId = this.contentService.currentFolderId;
+    dialogData.folderName = this.contentService.currentFolderName;
+
+    this.dialogService.openRenameSharedDirectoryDialog(dialogData);
   }
 }
