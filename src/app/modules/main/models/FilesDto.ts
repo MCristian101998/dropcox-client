@@ -10,6 +10,7 @@ export class FilesDto{
     size!: number;
     parentId?:string;
     path!:string;
+    fullPath!: string;
     uploadedByUser!: string;
     fileType!: FileTypeDto; 
 }

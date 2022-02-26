@@ -128,6 +128,7 @@ export class ContentComponent implements OnInit {
 
     this.contentService.navigatedToDirectory.subscribe((data) => {
 
+      this.selection.clear();
       let socket = new SockJS('http://localhost:6300/stomp');
       let client = Stomp.over(socket);
       let socketSubscription!: StompSubscription;
@@ -136,6 +137,8 @@ export class ContentComponent implements OnInit {
         console.log("in a shared folder. connecting to web socket.")
         client.connect({}, (frame: any) =>{
           socketSubscription = client.subscribe("/topic/" + this.contentService.currentFolderId, payload =>{
+            console.log("websocket update");
+            this.contentService.populateDirectories();
             this.contentService.navigateToFolder(this.contentService.currentFolderId);
           });
         });
@@ -296,7 +299,7 @@ export class ContentComponent implements OnInit {
     if(file.fileType.type == 'video' ||
     file.fileType.type == 'audio' ||
     file.fileType.type == 'image'){
-      this.dialogService.openPreviewFileDialog(file.fileType.type, file.id, file.path);
+      this.dialogService.openPreviewFileDialog(file.fileType.type, file.id, file.fullPath);
     }
   }
 

@@ -116,6 +116,18 @@ export class ContentService{
                 },
                 error: (err) => {
 
+                    console.log("navigate to folder method error : ", err);
+
+                    if(err.status == 404)
+                    {
+                        this.snackBarService.openSnackBar('The current folder has been deleted by another user !')
+                        if(this.currentFolderHasParent)
+                        {
+                            this.navigateToFolder(this.currentFolderParentId);
+                            return;
+                        }
+                    }
+
                     console.error(err);
                     this.snackBarService.openSnackBar('Something went wrong ! Please reload.')
                 }

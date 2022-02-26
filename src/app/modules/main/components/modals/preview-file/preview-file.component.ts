@@ -15,11 +15,10 @@ export class PreviewFileComponent implements OnInit {
 
   fileType:string = "";
   fileId:string = "";
-  imageFile:any = null;
-  videoUrl:any = null;
   filePath:string = '';
   videoFile:any;
   username!: string;
+  contentPath!: string;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -32,27 +31,10 @@ export class PreviewFileComponent implements OnInit {
     this.fileType = data.fileType;
     this.fileId = data.fileId;
     this.filePath = data.filePath;
-
-
-    var user = this.userService.getCurrentUser();
-
-    if(user != null)
-    {
-      this.username = user.username;
-    }
   }
 
   ngOnInit(): void {
-
-    const reader = new FileReader();
-    reader.onload = (e) => this.imageFile = e.target?.result;
-
-    if(this.fileType == 'image'){
-      this.imageFile = environment.apiBaseUrl + "media/image/"+ this.username + this.filePath;
-    }
-    else if(this.fileType == 'video'){
-      this.videoUrl = environment.apiBaseUrl + 'media/image/'+ this.username + this.filePath;
-    }
+    this.contentPath = environment.apiBaseUrl + "media/image" + this.filePath;
   }
 
   closeModal(){

@@ -5,10 +5,10 @@
 </button>
 <br>
 <div class="container">
-    <img *ngIf='fileType=="image"' [src] = 'imageFile'>
+    <img *ngIf='fileType=="image"' [src] = 'contentPath'>
     <video id="video"
         *ngIf='fileType=="video"'
         controls>
-        <source [src]="videoUrl">
+        <source [src]="contentPath">
     </video>
 </div>

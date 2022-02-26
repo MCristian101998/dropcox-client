@@ -18,6 +18,7 @@ export class QuickNavigationComponent implements OnInit {
 
   treeControl = new NestedTreeControl<DirectoriesDto>(node => node.subfolders);
   dataSource = new MatTreeNestedDataSource<DirectoriesDto>();
+  expandedNodes!: DirectoriesDto[];
 
   hasChild = (_: number, node: DirectoriesDto) => !!node.subfolders && node.subfolders.length > 0;
 
@@ -65,9 +66,76 @@ export class QuickNavigationComponent implements OnInit {
         this.abbreviateFolderNames(folder);
 
       })
-      this.dataSource.data = folders;
+
+      folders.forEach(function(item, i){
+        if(item.fileName == "My drive"){
+          folders.splice(i, 1);
+          folders.unshift(item);
+        }
+
+      })
+
+      if(this.dataSource.data.length)
+      {
+        this.expandedNodes = [];
+
+        console.log("this.treeControl.dataNodes", this.treeControl.dataNodes);
+
+        this.dataSource.data.forEach((node) =>{
+
+          if(this.treeControl.isExpanded(node)){
+            this.expandedNodes.push(node);
+          }
+        })
+
+        this.dataSource.data = folders;
+
+        this.expandedNodes.forEach((node) =>{
+          this.treeControl.expand(this.dataSource.data.find(n => n.id === node.id)!);
+        })
+
+        // console.log("list before object assigned ", this.dataSource.data);
+        // console.log("list to update from ", folders);
+        // Object.assign(this.dataSource.data, folders);
+
+        // console.log("list after object assigned ", this.dataSource.data);
+      }
+      else
+      {
+        this.dataSource.data = folders;
+      }
+
     });
   }
+
+    updateFolders(dataForUpdate: DirectoriesDto[], dataToUpdateFrom: DirectoriesDto[])
+    {
+      //check for new items
+      dataToUpdateFrom.forEach((item, index) =>{
+
+        var itemExists = dataForUpdate.find(x => x.id == item.id);
+
+        if(itemExists == undefined)
+        {
+          dataForUpdate.splice(index, 0, item);
+        }
+      })
+
+      dataForUpdate.forEach((item, index) =>{
+
+        var itemToUpdateFrom = dataToUpdateFrom.find(x => x.id == item.id);
+
+        if(itemToUpdateFrom == undefined){
+          dataForUpdate.splice(index, 1);
+        }else
+        {
+          item.fileName = itemToUpdateFrom.fileName;
+        }
+      })
+    }
+
+
+
 
   abbreviateFolderNames(folder: DirectoriesDto){
 
